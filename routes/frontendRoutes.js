@@ -82,31 +82,16 @@ router.get('/dashboard', (req, res)=>{
     res.render('dashboard/index2', {title:"Dashboard", subTitle:"CRM",script:`<script src="/js/homeTwoChart.js"></script>`})
 });
 
-router.get('/index3', (req, res)=>{
-    res.render('dashboard/index3', {title:"Dashboard", subTitle:"eCommerce",script:`<script src="/js/homeThreeChart.js"></script>`})
-});
+router.get('/auth/callback',authMiddleware,  async (req, res) => {
+  console.log('Cookies:', req.cookies.gwsToken);
+  const { gwsToken } = req.cookies;
 
-router.get('/index4', (req, res)=>{
-    res.render('dashboard/index4', {title:"Dashboard", subTitle:"Cryptocracy",script:`<script src="/js/homeFourChart.js"></script>`})
-});
-
-router.get('/index5', (req, res)=>{
-    res.render('dashboard/index5', {title:"Dashboard", subTitle:"Investment",script:`<script src="/js/homeFiveChart.js"></script>`})
-});
-
-router.get('/index6', (req, res)=>{
-    res.render('dashboard/index6', {title:"Dashboard", subTitle:"LMS / Learning System", script:`<script src="/js/pagejs/index6.js"></script>`})
-});
-
-router.get('/index7', (req, res)=>{
-    res.render('dashboard/index7', {title:"Dashboard", subTitle:"NFT & Gaming", script:`<script src="/js/pagejs/index7.js"></script>`})
-});
-
-router.get('/index8', (req, res)=>{
-    res.render('dashboard/index8', {title:"Dashboard", subTitle:"Medical", script:`<script src="/js/pagejs/index8.js"></script>`})
-});
-
-router.get('/index9', (req, res)=>{
-    res.render('dashboard/index9', {title:"Dashboard", subTitle:"Medical", script:`<script src="/js/pagejs/index9.js"></script>`})
-});
+    if (gwsToken) {
+      console.log('Token found:', gwsToken);
+      return res.redirect('/dashboard');
+    } else {
+      console.log('No token found, rendering login');
+      return res.redirect('/login');
+    }
+  });
 module.exports = router;
