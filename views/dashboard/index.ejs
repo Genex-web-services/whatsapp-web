@@ -1,0 +1,47 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head') %>
+
+
+<%- include('../partials/sidebar') %>
+<main class="dashboard-main bg-gray-100">
+<%- include('../partials/navbar') %>
+  <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
+    <div class="mb-10">
+                <h6 class="mb-6">Our Products </h6>
+                <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-4 gap-6">
+                    
+                    <% products.forEach(product => { %>
+                      <div class="card h-full rounded-xl overflow-hidden border-0">
+                        <div class="card-body p-6">
+                          <div class="w-[64px] h-[64px] inline-flex items-center justify-center bg-purple-200 dark:bg-purple-600/25 dark:text-purple-500 text-purple-600 mb-4 rounded-xl">
+                            <iconify-icon icon="<%= product.icon || 'solar:medal-ribbons-star-bold' %>" class="h5 mb-0"></iconify-icon>
+                          </div>
+                          <h6 class="mb-2"><%= product.client_name %></h6>
+                          <p class="card-text mb-2 text-secondary-light"><%= product.description ?product.description:"Random Text gateway to the Origin al the Works Platform, & your unique block chain gateway identity." %></p>
+                          <a href="https://auth.genexwebservices.com/login?clientid=<%= product.client_id %>&redirect_url=<%= product.redirect_uri %>&status=logging"
+   class="btn dark:text-purple-600 text-purple-600 hover:underline px-0 py-0 mt-4 inline-flex items-center gap-2">
+  Login Now 
+  <iconify-icon icon="iconamoon:arrow-right-2" class="text-xl"></iconify-icon>
+</a>
+
+                        </div>
+                      </div>
+                    <% }) %>
+                    
+
+                </div>
+            </div>   
+  </div>
+
+<%- include('../partials/footer') %>
+    <%- include('../partials/script') %>
+</main>
+ 
+
+      
+
+</body>
+</html>

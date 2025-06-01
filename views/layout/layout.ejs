@@ -1,0 +1,44 @@
+
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<%- include('../partials/head') %>
+
+<body class="dark:bg-neutral-800 bg-neutral-100 dark:text-white">
+
+    <!-- ..::  header area start ::.. -->
+    <%- include('../partials/sidebar') %>
+    <!-- ..::  header area end ::.. -->
+
+    <main class="dashboard-main">
+
+        <!-- ..::  navbar start ::.. -->
+        <%- include('../partials/navbar') %>
+        <!-- ..::  navbar end ::.. -->
+        <div class="dashboard-main-body">
+            
+            <!-- ..::  breadcrumb  start ::.. -->
+            <%- include('../partials/breadcrumb'), {title:title, subTitle:subTitle} %> 
+            <!-- ..::  header area end ::.. -->
+
+            <%- body %>
+        
+        </div>
+        <!-- ..::  footer  start ::.. -->
+        <%- include('../partials/footer') %>
+        <!-- ..::  footer area end ::.. -->
+
+    </main>
+    <!-- ..::  scripts  start ::.. -->
+    <%- include('../partials/script') %> 
+    
+       <!-- Add the script block here -->
+   <% if (typeof script !== 'undefined') { %>
+    <%- script %>
+  <% } %>
+    <!-- ..::  scripts  end ::.. -->
+
+</body>
+
+</html>
