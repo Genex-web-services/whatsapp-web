@@ -5,7 +5,8 @@ const router = express.Router();
 const Client = require('../models/Client'); // or Product model if exists
 const authMiddleware = require('../middlewares/authMiddleware'); // Assuming you have an auth middleware
 const User = require('../models/User');
-router.get('/getuserById/:id', async (req, res) => {
+const navbarMiddleware = require('../middlewares/navbarMiddleware');
+router.get('/getuserById/:id',navbarMiddleware, async (req, res) => {
   const userId = req.params.id;
   console.log("User ID:", userId);
 
@@ -18,18 +19,18 @@ router.get('/getuserById/:id', async (req, res) => {
 
     res.status(200).json({ user });
   } catch (error) {
-    console.error('Error fetching user by ID:', error);
+    console.error('Error fetching user by ID:',navbarMiddleware, error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
 
 // Redirect root URL to /login
-router.get('/', (req, res) => {
+router.get('/',navbarMiddleware, (req, res) => {
     res.redirect('/login');
 });
 
-router.get('/login', (req, res) => {
+router.get('/login',navbarMiddleware, (req, res) => {
   console.log('Cookies:', req.cookies.gwsToken);
   const { gwsToken } = req.cookies;
 
@@ -45,7 +46,7 @@ router.get('/login', (req, res) => {
 });
 
 
-router.get('/products',authMiddleware,  async (req, res) => {
+router.get('/products',navbarMiddleware,authMiddleware,  async (req, res) => {
   try {
     // Replace this with actual model like Product.find() if using a Product schema
     const products = await Client.find(); 
@@ -57,7 +58,7 @@ router.get('/products',authMiddleware,  async (req, res) => {
   }
 });
 
-router.get('/dashboard',authMiddleware,  async (req, res) => {
+router.get('/dashboard',navbarMiddleware,authMiddleware,  async (req, res) => {
   try {
     // Replace this with actual model like Product.find() if using a Product schema
     const products = await Client.find(); 
@@ -73,16 +74,16 @@ router.get('/dashboard',authMiddleware,  async (req, res) => {
 
 
 // GET route for register page
-router.get('/register', (req, res) => {
+router.get('/register',navbarMiddleware, (req, res) => {
       const queryParams = req.query; // Get all query params from URL
     res.render('authentication/signup.ejs', { queryParams });
 });
 
-router.get('/dashboard', (req, res)=>{
+router.get('/dashboard',authMiddleware,navbarMiddleware, (req, res)=>{
     res.render('dashboard/index2', {title:"Dashboard", subTitle:"CRM",script:`<script src="/js/homeTwoChart.js"></script>`})
 });
 
-router.get('/auth/callback',authMiddleware,  async (req, res) => {
+router.get('/auth/callback',navbarMiddleware,authMiddleware,  async (req, res) => {
   console.log('Cookies:', req.cookies.gwsToken);
   const { gwsToken } = req.cookies;
 
