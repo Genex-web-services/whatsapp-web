@@ -1,32 +1,32 @@
 const jwt = require('jsonwebtoken');
-const axios = require('axios'); // for internal API call
+const axios = require('axios');
 
 const navbarMiddleware = async (req, res, next) => {
   const token = req.cookies.gwsToken;
 
-  if (!token) {
-    console.log('No token provided'); 
-    return res.redirect('/login'); // Redirect to login if no token
-  }
+  if (!token) return res.redirect('/login');
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
-    // Call your own internal API to get full user details
-    const apiURL = `https://auth.gws365.in/api/v1.0/client/`;
-    const response = await axios.get(apiURL); // You can also include auth headers if needed
-    if (response.data) {
-        req.user = response.data.user; // attach full user to request
-        next();
+    if (userId) {
+        // Attach user info to requestx
+      const messagesRes = await axios.get(`https://auth.gws365.in/api/v1.0/client/`);
+      req.products = messagesRes.data || []; // attach messages
+
+       // Get notifications
+    //const notifRes = await axios.get(`https://auth.gws365.in/api/v1.0/notification/${userId}`);
+    //req.notifications = notifRes.data.notifications || [];
+
+      next();
     } else {
-      return res.redirect('/login'); // Redirect to login if user not found
+      return res.redirect('/login');
     }
-    
+
   } catch (err) {
     console.error('Auth Middleware Error:', err);
-    return res.status(401).json({ message: 'Invalid token'.err });
+    return res.status(401).json({ message: 'Invalid token' });
   }
 };
 
-module.exports = authMiddleware;
-
-
+module.exports = navbarMiddleware;

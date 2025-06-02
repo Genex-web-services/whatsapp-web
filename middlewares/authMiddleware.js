@@ -14,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
-    console.log('Decoded User ID:', userId);
+
     // Call your own internal API to get full user details
     const apiURL = `https://auth.gws365.in/getuserById/${userId}`;
     const response = await axios.get(apiURL); // You can also include auth headers if needed

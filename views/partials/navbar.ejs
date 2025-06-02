@@ -38,283 +38,244 @@
                                 <h6 class="text-lg text-neutral-900 font-semibold mb-0">Choose Your Language</h6>
                             </div>
                         </div>
+<script>
+    const languages = [
+  { id: 'english', label: 'English', code: 'en' },
+  { id: 'hindi', label: 'Hindi', code: 'hi' },
+  { id: 'bengali', label: 'Bengali', code: 'bn' },
+  { id: 'tamil', label: 'Tamil', code: 'ta' },
+  { id: 'telugu', label: 'Telugu', code: 'te' },
+  { id: 'marathi', label: 'Marathi', code: 'mr' },
+  { id: 'gujarati', label: 'Gujarati', code: 'gu' },
+  { id: 'kannada', label: 'Kannada', code: 'kn' },
+  { id: 'urdu', label: 'Urdu', code: 'ur' }
+];
 
-                        <div class="max-h-[400px] overflow-y-auto scroll-sm pe-2">
-                            <div class="mt-4 flex flex-col gap-4">
+</script>
+<div id="google_translate_element" style="display:none;"></div>
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,bn,ta,te,mr,gu,kn,ur',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+    function changeLanguage(langCode) {
+  const selectField = document.querySelector("select.goog-te-combo");
+  if (!selectField) return alert("Translation dropdown not loaded yet");
 
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="english">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag1.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">English</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="english">
-                                </div>
+  selectField.value = langCode;
+  selectField.dispatchEvent(new Event("change"));
+}
 
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="Japan">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag2.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">Japan</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="Japan">
-                                </div>
+// Add listener to radio buttons
+languages.forEach(lang => {
+  const radio = document.getElementById(lang.id);
+  if (radio) {
+    radio.addEventListener("change", () => {
+      changeLanguage(lang.code);
+    });
+  }
+});
 
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="Franch">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag3.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">Franch</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="Franch">
-                                </div>
+</script>
+<style>
+    .goog-te-banner-frame, .goog-logo-link, .goog-te-gadget {
+  display: none !important;
+}
 
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="Germany">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag4.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">Germany</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="Germany">
-                                </div>
-
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="SouthKoria">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag5.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">South Koria</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="SouthKoria">
-                                </div>
-
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="Bangladesh">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag6.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">Bangladesh</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="Bangladesh">
-                                </div>
-
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="India">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag7.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">India</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="India">
-                                </div>
-
-                                <div class="form-check style-check flex items-center justify-between">
-                                    <label class="form-check-label line-height-1 font-medium text-secondary-light" for="Koria">
-                                        <span class="text-black hover-bXg-transparent hover-text-primary flex items-center gap-3">
-                                            <img src="<%= env.Assets_URL%>images/flags/flag8.png" alt="" class="w-9 h-9 bg-success-subtle text-success-600 rounded-full shrink-0">
-                                            <span class="text-base font-semibold mb-0">Koria</span>
-                                        </span>
-                                    </label>
-                                    <input class="form-check-input rounded-full" name="language" type="radio" id="Koria">
-                                </div>
-
-                            </div>
-                        </div>
+</style>
                     </div>
                 </div>
                 <!-- Language Dropdown End  -->
-                <!-- Message Dropdown Start  -->
-                <button data-dropdown-toggle="dropdownMessage" class="has-indicator w-10 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-full flex justify-center items-center" type="button">
-                    <iconify-icon icon="mage:email" class="text-neutral-900 dark:text-white text-xl"></iconify-icon>
-                </button>
-                <div id="dropdownMessage" class="z-10 hidden bg-white dark:bg-neutral-700 rounded-2xl overflow-hidden shadow-lg max-w-[394px] w-full">
-                    <div class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 m-4 flex items-center justify-between gap-2">
-                        <h6 class="text-lg text-neutral-900 font-semibold mb-0">Messaage</h6>
-                        <span class="w-10 h-10 bg-white dark:bg-neutral-600 text-primary-600 dark:text-white font-bold flex justify-center items-center rounded-full">05</span>
-                    </div>
-                    <div class="scroll-sm !border-t-0">
-                        <div class="max-h-[400px] overflow-y-auto">
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative">
-                                        <img class="rounded-full w-11 h-11" src="<%= env.Assets_URL%>images/notification/profile-3.png" alt="Joseph image">
-                                        <span class="absolute end-[2px] bottom-[2px] w-2.5 h-2.5 bg-success-500 border border-white rounded-full dark:border-gray-600"></span>
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Kathryn Murphy</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">hey! there i'm...</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0 flex flex-col items-end gap-1">
-                                    <span class="text-sm text-neutral-500">12:30 PM</span>
-                                    <span class="w-4 h-4 text-xs bg-warning-600 text-white rounded-full flex justify-center items-center">8</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative">
-                                        <img class="rounded-full w-11 h-11" src="<%= env.Assets_URL%>images/notification/profile-4.png" alt="Joseph image">
-                                        <span class="absolute end-[2px] bottom-[2px] w-2.5 h-2.5 bg-success-500 border border-white rounded-full dark:border-gray-600"></span>
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Kathryn Murphy</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">hey! there i'm...</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0 flex flex-col items-end gap-1">
-                                    <span class="text-sm text-neutral-500">12:30 PM</span>
-                                    <span class="w-4 h-4 text-xs bg-warning-600 text-white rounded-full flex justify-center items-center">8</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative">
-                                        <img class="rounded-full w-11 h-11" src="<%= env.Assets_URL%>images/notification/profile-5.png" alt="Joseph image">
-                                        <span class="absolute end-[2px] bottom-[2px] w-2.5 h-2.5 bg-success-500 border border-white rounded-full dark:border-gray-600"></span>
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Kathryn Murphy</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">hey! there i'm...</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0 flex flex-col items-end gap-1">
-                                    <span class="text-sm text-neutral-500">12:30 PM</span>
-                                    <span class="w-4 h-4 text-xs bg-warning-600 text-white rounded-full flex justify-center items-center">8</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative">
-                                        <img class="rounded-full w-11 h-11" src="<%= env.Assets_URL%>images/notification/profile-6.png" alt="Joseph image">
-                                        <span class="absolute end-[2px] bottom-[2px] w-2.5 h-2.5 bg-success-500 border border-white rounded-full dark:border-gray-600"></span>
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Kathryn Murphy</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">hey! there i'm...</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0 flex flex-col items-end gap-1">
-                                    <span class="text-sm text-neutral-500">12:30 PM</span>
-                                    <span class="w-4 h-4 text-xs bg-warning-600 text-white rounded-full flex justify-center items-center">8</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative">
-                                        <img class="rounded-full w-11 h-11" src="<%= env.Assets_URL%>images/notification/profile-7.png" alt="Joseph image">
-                                        <span class="absolute end-[2px] bottom-[2px] w-2.5 h-2.5 bg-success-500 border border-white rounded-full dark:border-gray-600"></span>
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Kathryn Murphy</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">hey! there i'm...</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0 flex flex-col items-end gap-1">
-                                    <span class="text-sm text-neutral-500">12:30 PM</span>
-                                    <span class="w-4 h-4 text-xs bg-warning-600 text-white rounded-full flex justify-center items-center">8</span>
-                                </div>
-                            </a>
-                        </div>
+                 <style>
+  /* Hide Google Translate banner and logo */
+  .goog-te-banner-frame.skiptranslate,
+  .goog-logo-link,
+  .goog-te-gadget span {
+    display: none !important;
+  }
 
-                        <div class="text-center py-3 px-4">
-                            <a href="javascript:void(0)" class="text-primary-600 dark:text-primary-600 font-semibold hover:underline text-center">See All Message </a>
-                        </div>
-                    </div>
-                </div>
+  body {
+    top: 0px !important;
+  }
+
+  /* Hide Google Translate dropdown menu iframe */
+  .goog-te-menu-frame {
+    display: none !important;
+  }
+</style>
+
+<script>
+  // Map your radio input IDs to Google Translate language codes
+  const langMap = {
+    english: 'en',
+    japan: 'ja',
+    french: 'fr',
+    germany: 'de',
+    southkorea: 'ko',
+    bangladesh: 'bn',
+    hindi: 'hi',
+    korea: 'ko'
+  };
+
+function waitForGoogleTranslateIframe(callback, maxAttempts = 20, interval = 300) {
+  let attempts = 0;
+
+  const checkIframe = () => {
+    const iframe = document.querySelector('iframe.goog-te-menu-frame');
+    if (iframe) {
+      callback(iframe);
+    } else if (attempts < maxAttempts) {
+      attempts++;
+      setTimeout(checkIframe, interval);
+    } else {
+      alert("Google Translate is still loading. Please wait a moment.");
+    }
+  };
+
+  checkIframe();
+}
+
+
+document.querySelectorAll('input[name="language"]').forEach((radio) => {
+  radio.addEventListener('change', function () {
+    const langCode = langMap[this.id.toLowerCase()];
+    if (!langCode) return;
+
+    waitForGoogleTranslateIframe((translateFrame) => {
+      const innerDoc = translateFrame.contentDocument || translateFrame.contentWindow.document;
+      const langItems = innerDoc.querySelectorAll('.goog-te-menu2-item span.text');
+
+      const languageNames = {
+        en: 'english',
+        hi: 'hindi',
+        ja: 'japanese',
+        fr: 'french',
+        de: 'german',
+        ko: 'korean',
+        bn: 'bengali'
+      };
+
+      for (const el of langItems) {
+        if (el.innerText.toLowerCase() === languageNames[langCode]) {
+          el.click();
+          break;
+        }
+      }
+    });
+  });
+});
+
+</script>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,hi,ta,te,bn,ml,kn,gu,mr,pa,ur,ja,fr,de,ko',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
                 <!-- Message Dropdown End  -->
                 <!-- Notification Start  -->
                 <button data-dropdown-toggle="dropdownNotification" class="has-indicator w-10 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-full flex justify-center items-center" type="button">
                     <iconify-icon icon="iconoir:bell" class="text-neutral-900 dark:text-white text-xl"></iconify-icon>
                 </button>
                 <div id="dropdownNotification" class="z-10 hidden bg-white dark:bg-neutral-700 rounded-2xl overflow-hidden shadow-lg max-w-[394px] w-full">
-                    <div class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 m-4 flex items-center justify-between gap-2">
-                        <h6 class="text-lg text-neutral-900 font-semibold mb-0">Notification</h6>
-                        <span class="w-10 h-10 bg-white dark:bg-neutral-600 text-primary-600 dark:text-white font-bold flex justify-center items-center rounded-full">05</span>
-                    </div>
-                    <div class="scroll-sm !border-t-0">
-                        <div class="max-h-[400px] overflow-y-auto">
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative w-11 h-11 bg-success-200 dark:bg-success-600/25 text-success-600 flex justify-center items-center rounded-full">
-                                        <iconify-icon icon="bitcoin-icons:verify-outline" class="text-2xl"></iconify-icon>
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Congratulations</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">Your profile has been Verified. Your profile has been Verified</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="text-sm text-neutral-500">23 Mins ago</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative">
-                                        <img class="rounded-full w-11 h-11" src="<%= env.Assets_URL%>images/notification/profile-4.png" alt="Joseph image">
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Ronald Richards</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">You can stitch between artboards</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="text-sm text-neutral-500">23 Mins ago</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative w-11 h-11 bg-primary-100 dark:bg-primary-600/25 text-primary-600 flex justify-center items-center rounded-full">
-                                        AM
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Arlene McCoy</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">Invite you to prototyping</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="text-sm text-neutral-500">23 Mins ago</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative">
-                                        <img class="rounded-full w-11 h-11" src="<%= env.Assets_URL%>images/notification/profile-6.png" alt="Joseph image">
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Annette Black</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">Invite you to prototyping</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="text-sm text-neutral-500">23 Mins ago</span>
-                                </div>
-                            </a>
-                            <a href="javascript:void(0)" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-shrink-0 relative w-11 h-11 bg-primary-100 dark:bg-primary-600/25 text-primary-600 flex justify-center items-center rounded-full">
-                                        DR
-                                    </div>
-                                    <div>
-                                        <h6 class="text-sm fw-semibold mb-1">Darlene Robertson</h6>
-                                        <p class="mb-0 text-sm line-clamp-1">Invite you to prototyping</p>
-                                    </div>
-                                </div>
-                                <div class="shrink-0">
-                                    <span class="text-sm text-neutral-500">23 Mins ago</span>
-                                </div>
-                            </a>
-                        </div>
+  <div class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 m-4 flex items-center justify-between gap-2">
+    <h6 class="text-lg text-neutral-900 font-semibold mb-0">Notification</h6>
+    <span class="w-10 h-10 bg-white dark:bg-neutral-600 text-primary-600 dark:text-white font-bold flex justify-center items-center rounded-full">
+      <%= notifications.length %>
+    </span>
+  </div>
 
-                        <div class="text-center py-3 px-4">
-                            <a href="javascript:void(0)" class="text-primary-600 dark:text-primary-600 font-semibold hover:underline text-center">See All Notification </a>
-                        </div>
-                    </div>
+  <div class="scroll-sm !border-t-0">
+    <div class="max-h-[400px] overflow-y-auto">
+      <% notifications.forEach(notif => { %>
+        <a target="_blank" href="<%= notif.redirect_uri || '#' %>" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-600 justify-between gap-1">
+          <div class="flex items-center gap-3">
+            <div class="flex-shrink-0 relative">
+              <% if (notif.image) { %>
+                <img class="rounded-full w-11 h-11" src="<%= notif.image %>" alt="<%= notif.senderName %> image">
+              <% } else { %>
+                <div class="w-11 h-11 rounded-full flex justify-center items-center bg-primary-100 dark:bg-primary-600/25 text-primary-600 font-semibold">
+                  <%= (notif.senderName || 'NA')[0] %>
                 </div>
+              <% } %>
+            </div>
+            <div>
+              <h6 class="text-sm fw-semibold mb-1"><%= notif.senderName %></h6>
+              <p class="mb-0 text-sm line-clamp-1"><%= notif.message %></p>
+            </div>
+          </div>
+          <div class="shrink-0">
+            <span class="text-sm text-neutral-500"><%= notif.timeAgo || 'Just now' %></span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+
+    <div class="text-center py-3 px-4">
+      <a href="https://admin.gws365.in/notifications" class="text-primary-600 dark:text-primary-600 font-semibold hover:underline text-center">
+        See All Notifications
+      </a>
+    </div>
+  </div>
+</div>
+
                 <!-- Notification End  -->
+
+<!-- Message Dropdown Start  -->
+                <button data-dropdown-toggle="dropdownMessage" class="has-indicator w-10 h-10 bg-neutral-200 dark:bg-neutral-700 rounded-full flex justify-center items-center" type="button">
+                    <iconify-icon icon="mynaui:grid" class="text-neutral-900 dark:text-white text-xl"></iconify-icon>
+                </button>
+                <div id="dropdownMessage" class="z-10 hidden bg-white dark:bg-neutral-700 rounded-2xl overflow-hidden shadow-lg max-w-[394px] w-full">
+  <div class="py-3 px-4 rounded-lg bg-primary-50 dark:bg-primary-600/25 m-4 flex items-center justify-between gap-2">
+    <h6 class="text-lg text-neutral-900 font-semibold mb-0">Message</h6>
+    <span class="w-10 h-10 bg-white dark:bg-neutral-600 text-primary-600 dark:text-white font-bold flex justify-center items-center rounded-full">
+      <%= products?.length.toString().padStart(2, '0') || '00' %>
+    </span>
+  </div>
+
+  <div class="scroll-sm !border-t-0 px-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto ">
+    <% products.forEach(product => { %>
+      <a target="_blank" href="<%= product.redirect_uri %>" class="p-4 bg-white dark:bg-neutral-800 border rounded-xl shadow-sm hover:shadow-md transition hover:bg-gray-50 dark:hover:bg-neutral-700 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <img class="rounded-full w-11 h-11" src="https://assets.genexwebservices.com/images/notification/profile-4.png" alt="<%= product.senderName %> image">
+          <div>
+            <h6 class="text-sm font-semibold mb-1 text-neutral-800 dark:text-white"><%= product.client_name %></h6>
+            <p class="text-sm text-neutral-600 dark:text-neutral-300 line-clamp-2"><%= product.description %></p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between text-sm text-neutral-500 dark:text-neutral-400">
+          <span><%= product.time %></span>
+          <% if (product.unreadCount > 0) { %>
+            <span class="w-5 h-5 text-xs bg-warning-600 text-white rounded-full flex justify-center items-center"><%= product.unreadCount %></span>
+          <% } %>
+        </div>
+      </a>
+    <% }) %>
+  </div>
+
+  <div class="text-center py-3">
+    <a href="https://admin.gws365.in/dashboard" class="text-primary-600 dark:text-primary-400 font-semibold hover:underline">
+      See All Products
+    </a>
+  </div>
+</div>
+
+</div>
 
 
                 <button data-dropdown-toggle="dropdownProfile" class="flex justify-center items-center rounded-full" type="button">
