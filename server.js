@@ -5,7 +5,6 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require("path");
 const connectDB = require('./config/db');
-const clientRoutes = require('./routes/clientRoutes');
 const frontendRoutes = require('./routes/frontendRoutes');
 
 // Load environment variables
@@ -60,7 +59,6 @@ app.use(cors({
 
 // Routes
 app.use('/', frontendRoutes);
-app.use('/api/v1.0/client', clientRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;

@@ -1,0 +1,85 @@
+<%- include('../partials/head') %>
+<!-- DataTable CSS -->
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+<!-- DataTable JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<%- include('../partials/sidebar') %>
+<main class="dashboard-main bg-gray-100">
+  <%- include('../partials/navbar') %>
+  <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
+    <div class="grid grid-cols-12">
+      <div class="col-span-12">
+        <div class="card h-full p-0 rounded-xl border-0 overflow-hidden">
+          <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-content-end">
+            
+            <a href="/roles-and-permission/add" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+              <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+              Add Role And Permissions
+            </a>
+          </div>
+          <div class="card-body p-6">
+            <div class="table-responsive scroll-sm">
+             <table id="roleTable" class="table bordered-table sm-table mb-0">
+  <thead>
+    <tr>
+      <th>S.L</th>
+      <th>Role Name</th>
+      <th>Role Code</th>
+      <th>Tenant</th>
+      <th>Product ID</th>
+      <th>Permissions</th>
+      <th>Default?</th>
+      <th>Created At</th>
+      <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% roles.forEach((role, index) => { %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= role.name %></td>
+        <td class="text-uppercase"><%= role.roleCode %></td>
+        <td><%= role.tenantId?.name || 'N/A' %></td>
+        <td><%= role.product_id %></td>
+        <td>
+          <% if (role.permissions && role.permissions.length) { %>
+            <ul class="list-disc ml-4 text-sm">
+              <% role.permissions.forEach(p => { %>
+                <li><%= p %></li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <em>No permissions</em>
+          <% } %>
+        </td>
+        <td><%= role.isDefault ? 'Yes' : 'No' %></td>
+        <td><%= new Date(role.createdAt).toLocaleDateString() %></td>
+        <td class="text-center">
+          <button class="bg-info-100 text-info-600 w-10 h-10 rounded-full">V</button>
+          <button class="bg-success-100 text-success-600 w-10 h-10 rounded-full">E</button>
+          <button class="bg-danger-100 text-danger-600 w-10 h-10 rounded-full">D</button>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+
+
+            </div>
+            <div class="flex items-center justify-between flex-wrap gap-2 mt-6">
+              <span>Showing <%= roles.length %> entries</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/footer') %>
+  <%- include('../partials/script') %>
+</main>
+
+

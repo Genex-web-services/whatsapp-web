@@ -1,0 +1,80 @@
+<%- include('../partials/head') %>
+<!-- DataTable CSS -->
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+<!-- DataTable JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<%- include('../partials/sidebar') %>
+<main class="dashboard-main bg-gray-100">
+  <%- include('../partials/navbar') %>
+  <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
+    <div class="grid grid-cols-12">
+      <div class="col-span-12">
+        <div class="card h-full p-0 rounded-xl border-0 overflow-hidden">
+          <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-content-end">
+            
+            <a href="/organisation/add" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
+              <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
+              Add New Organisation
+            </a>
+          </div>
+          <div class="card-body p-6">
+            <div class="table-responsive scroll-sm">
+              <table id="organizationTable" class="table bordered-table sm-table mb-0">
+  <thead>
+    <tr>
+      <th>S.L</th>
+      <th>Company Name</th>
+      <th>Logo</th>
+      <th>Industry</th>
+      <th>Address</th>
+      <th>GST Number</th>
+      <th>Contact Email</th>
+      <th>Created At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% organizations.forEach((org, index) => { %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= org.companyName || 'N/A' %></td>
+        <td>
+          <% if (org.logoUrl) { %>
+            <img src="<%= org.logoUrl %>" alt="Logo" style="height:40px; width:auto;" />
+          <% } else { %>
+            No Logo
+          <% } %>
+        </td>
+        <td><%= org.industry || 'N/A' %></td>
+        <td><%= org.address || 'N/A' %></td>
+        <td><%= org.gstNumber || 'N/A' %></td>
+        <td><%= org.contactEmail || 'N/A' %></td>
+        <td><%= new Date(org.createdAt).toLocaleDateString() %></td>
+        <td class="text-center">
+          <button class="bg-info-100 dark:bg-info-600/25 hover:bg-info-200 text-info-600 dark:text-info-400 w-10 h-10 rounded-full">V</button>
+          <button class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 w-10 h-10 rounded-full">E</button>
+          <button class="bg-danger-100 dark:bg-danger-600/25 hover:bg-danger-200 text-danger-600 dark:text-danger-500 w-10 h-10 rounded-full">D</button>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+
+            </div>
+            <div class="flex items-center justify-between flex-wrap gap-2 mt-6">
+              <span>Showing <%= organizations.length %> entries</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/footer') %>
+  <%- include('../partials/script') %>
+</main>
+
+

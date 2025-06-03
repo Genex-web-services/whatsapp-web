@@ -1,3 +1,20 @@
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+<!-- jQuery (Required by DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iconify/2.0.0/iconify.min.js" integrity="sha512-lYMiwcB608+RcqJmP93CMe7b4i9G9QK1RbixsNu4PzMRJMsqr/bUrkXUuFzCNsRUo3IXNUr5hz98lINURv5CNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(document).ready(function() {
+    $('#userTable').DataTable(); // applies to all <table>
+    // Or better: only apply to specific class
+    // $('.datatable').DataTable();
+  });
+</script>
+
 <footer class="d-footer">
     <div class="flex items-center justify-between gap-3">
         <p class="mb-0">© 2025 GWS365. All Rights Reserved.</p>

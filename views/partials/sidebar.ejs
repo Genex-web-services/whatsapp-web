@@ -17,7 +17,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="sidebar-menu-group-title">Application</li>
+            <li class="sidebar-menu-group-title">Admin/User List</li>
 
 
             <li class="dropdown">
@@ -27,27 +27,97 @@
                 </a>
                 <ul class="sidebar-submenu">
                     <li>
-                        <a href="/users/userslist"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
+                        <a href="/users/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
                     </li>
                     <li>
-                        <a href="/users/usersgrid"><i class="ri-circle-fill circle-icon text-warning-600 w-auto"></i> Users Grid</a>
-                    </li>
-                    <li>
-                        <a href="/users/adduser"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add User</a>
-                    </li>
-                    <li>
-                        <a href="/users/viewprofile"><i class="ri-circle-fill circle-icon text-danger-600 w-auto"></i> View Profile</a>
+                        <a href="/users/add"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add User</a>
                     </li>
                 </ul>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+                    <span>Roles & Permissons</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="/roles-and-permission/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Roles List</a>
+                    </li>
+                    <li>
+                        <a href="/roles-and-permission/add"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add New Roles</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-group-title">Tenants</li>
+
+
+            <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+                    <span>Tenants</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="/tenants/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Tenants List</a>
+                    </li>
+                    <li>
+                        <a href="/tenants/add"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add Tenants</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-group-title">Organisations</li>
+
+
+            <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+                    <span>Organisation</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="/organisation/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Organisation List</a>
+                    </li>
+                    <li>
+                        <a href="/organisation/add"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add Organisation</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-group-title">Products</li>
+
+
+            <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+                    <span>Products</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="/products/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Products List</a>
+                    </li>
+                    <li>
+                        <a href="/products/add"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add Products</a>
+                    </li>
+                    <li>
+                        <a href="/products/pricing">
+                            <iconify-icon icon="hugeicons:money-send-square" class="menu-icon"></iconify-icon>
+                            <span>Pricing</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
             </li>
 
             <li class="sidebar-menu-group-title">Others</li>
 
             
             <li>
-                <a href="/pricing">
+                <a href="/logs">
                     <iconify-icon icon="hugeicons:money-send-square" class="menu-icon"></iconify-icon>
-                    <span>Pricing</span>
+                    <span>Activity Logs</span>
                 </a>
             </li>
             

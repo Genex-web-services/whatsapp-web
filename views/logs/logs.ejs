@@ -1,0 +1,73 @@
+<%- include('../partials/head') %>
+<!-- DataTable CSS -->
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+<!-- DataTable JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<%- include('../partials/sidebar') %>
+<main class="dashboard-main bg-gray-100">
+  <%- include('../partials/navbar') %>
+  <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
+    <div class="grid grid-cols-12">
+      <div class="col-span-12">
+        <div class="card h-full p-0 rounded-xl border-0 overflow-hidden">
+          
+          <div class="card-body p-6">
+            <div class="table-responsive scroll-sm">
+          <table id="logTable" class="table bordered-table sm-table mb-0">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Type</th>
+      <th>Email</th>
+      <th>IP</th>
+      <th>Method</th>
+      <th>URL</th>
+      <th>Client ID</th>
+      <th>Status</th>
+      <th>Message</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% logs.forEach((log, index) => { %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= log.type %></td>
+        <td><%= log.email || '-' %></td>
+        <td><%= log.ip || '-' %></td>
+        <td><%= log.method || '-' %></td>
+        <td><%= log.url || '-' %></td>
+        <td><%= log.client_id || '-' %></td>
+        <td>
+          <span class="px-2 py-1 rounded font-medium text-sm 
+                      <%= log.success ? 'bg-success-100 text-success-600' : 'bg-danger-100 text-danger-600' %>">
+            <%= log.success ? 'Success' : 'Failed' %>
+          </span>
+        </td>
+        <td><%= log.message || '-' %></td>
+        <td><%= new Date(log.createdAt).toLocaleString() %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+
+
+
+            </div>
+            <div class="flex items-center justify-between flex-wrap gap-2 mt-6">
+              <span>Showing <%= logs  .length %> entries</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../partials/footer') %>
+  <%- include('../partials/script') %>
+</main>
+
+
