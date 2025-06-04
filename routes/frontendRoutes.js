@@ -1,15 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product');
-const Tenant = require('../models/Tenant');
-const Organization = require('../models/Organization');
-const Roles = require('../models/Role');
-const Logs = require('../models/Log');
-const User = require('../models/User');
 const authMiddleware = require('../middlewares/authMiddleware');
 const navbarMiddleware = require('../middlewares/navbarMiddleware');
 const hasPermission = require('../middlewares/hasPermission');
-
+const getModels = require('../utils/getModels');
 // Middleware to redirect if gwsToken cookie is present
 const redirectIfLoggedIn = (req, res, next) => {
   const { gwsToken } = req.cookies;
@@ -35,8 +29,9 @@ router.get('/', (req, res) => {
 });
 
 // Login Page
-router.get('/login', (req, res) => {
+router.get('/login', async (req, res) => {
   const { gwsToken } = req.cookies;
+  const { Roles } = await getModels(); 
 
   if (gwsToken) {
     return res.redirect('/dashboard');
@@ -45,6 +40,7 @@ router.get('/login', (req, res) => {
   const queryParams = req.query;
   res.render('authentication/signin.ejs', {
     queryParams,
+    Roles,
     user: req.user || null,
     products: req.products || [],
 notifications: req.notification || [],
@@ -77,29 +73,33 @@ router.get('/auth/callback', (req, res) => {
 });
 
 
-// Admin/User List
-router.get('/roles-and-permission/list',authMiddleware,navbarMiddleware,hasPermission('list_role'), async (req, res) => {
-    try {
-      const roles = await Roles.find({});
+// // Admin/User List
+router.get('/Roles-and-permission/list',authMiddleware,navbarMiddleware,hasPermission('list_role'), async (req, res) => {
+  const { Role } = await getModels();  
+  try {
+      const roles = await Role.find({});
       renderWithLocals(res, 'role/list', req, { roles });
     } catch (err) {
-      console.error('Error fetching roles:', err);
+      console.error('Error fetching Roles:', err);
       res.status(500).send('Internal Server Error');
     }
   }
 );
 
-router.get('/roles-and-permission/add',authMiddleware,navbarMiddleware,hasPermission('add_role'),async (req, res) => {
+router.get('/Roles-and-permission/add',authMiddleware,navbarMiddleware,hasPermission('add_role'), async (req, res) => {
+
+  const {Role} = await getModels();
     try {
-      const roles = await Roles.find({});
-      renderWithLocals(res, 'role/add', req, { roles });
+      const Roles = await Role.find({});
+      renderWithLocals(res, 'role/add', req, { Roles });
     } catch (err) {
-      console.error('Error fetching roles:', err);
+      console.error('Error fetching Roles:', err);
       res.status(500).send('Internal Server Error');
     }
   }
 );
 router.get('/users/list', authMiddleware, navbarMiddleware,hasPermission('list_user'), async (req, res) => {
+  const { User } = await getModels();
     try {
         const users = await User.find({}); // Fetch all users
         renderWithLocals(res, 'users/list', req, { users });
@@ -108,18 +108,17 @@ router.get('/users/list', authMiddleware, navbarMiddleware,hasPermission('list_u
         res.status(500).send('Error fetching users');
     }
 });
-router.get('/users/add',authMiddleware,navbarMiddleware,hasPermission('add_user'),(req, res) => {
+router.get('/users/add',authMiddleware,navbarMiddleware,hasPermission('add_user'),async(req, res) => {
+  const { User} = await getModels();
     renderWithLocals(res, 'users/add', req,{
         User:User.find({}),
       });
   }
 );
-
-
-
 // Tenants
 router.get('/tenants/list',authMiddleware,navbarMiddleware,hasPermission('list_tenant'),async (req, res) => {
-    try {
+  const { Tenant} = await getModels();  
+  try {
       const tenants = await Tenant.find({});
       renderWithLocals(res, 'tenants/list', req, {
         tenants
@@ -131,7 +130,8 @@ router.get('/tenants/list',authMiddleware,navbarMiddleware,hasPermission('list_t
   }
 );
 
-router.get('/tenants/add',authMiddleware,navbarMiddleware,hasPermission('add_tenant'),(req, res) => {
+router.get('/tenants/add',authMiddleware,navbarMiddleware,hasPermission('add_tenant'),async(req, res) => {
+  const { Tenant} = await getModels();
     renderWithLocals(res, 'tenants/add', req,{
          Tenant:Tenant.find({}),
       });
@@ -140,6 +140,7 @@ router.get('/tenants/add',authMiddleware,navbarMiddleware,hasPermission('add_ten
 
 // Organisations
 router.get('/organisation/list', authMiddleware, navbarMiddleware,hasPermission('list_organisation'), async (req, res) => {  
+  const { Organization} = await getModels();
   try {
     const organizations = await Organization.find({});
     renderWithLocals(res, 'organisation/list', req, { organizations });
@@ -149,7 +150,8 @@ router.get('/organisation/list', authMiddleware, navbarMiddleware,hasPermission(
   }
 });
 
-router.get('/organisation/add',authMiddleware,hasPermission('add_organisation'),navbarMiddleware,(req, res) => {
+router.get('/organisation/add',authMiddleware,hasPermission('add_organisation'),navbarMiddleware,async(req, res) => {
+  const { Organization} = await getModels();
     renderWithLocals(res, 'organisation/add', req,{
          Organization:Organization.find({}),
       });
@@ -157,21 +159,20 @@ router.get('/organisation/add',authMiddleware,hasPermission('add_organisation'),
 );
 
 // Products
-router.get('/products/list',  authMiddleware,  navbarMiddleware,hasPermission('list_product'),(req, res) => {
+router.get('/products/list',  authMiddleware,  navbarMiddleware,hasPermission('list_product'), async(req, res) => {
+  const { Product} = await getModels();
     renderWithLocals(res, 'products/list', req,{ Product:Product.find({}),});
   }
 );
-router.get('/products/add',authMiddleware,navbarMiddleware,hasPermission('add_product'),(req, res) => {
+router.get('/products/add',authMiddleware,navbarMiddleware,hasPermission('add_product'),async(req, res) => {
+    const { Product} = await getModels();      
     renderWithLocals(res, 'products/add', req,{
          Product:Product.find({}),
       });
   }
 );
-router.get(
-  '/products/pricing',
-  authMiddleware,
-  navbarMiddleware,
-  (req, res) => {
+router.get('/products/pricing',authMiddleware,navbarMiddleware,async(req, res) => {
+  const { Product} = await getModels();
     renderWithLocals(res, 'products/pricing', req,{
          Product:Product.find({}),
       });
@@ -180,8 +181,9 @@ router.get(
 
 // Logs
 router.get('/logs',authMiddleware,navbarMiddleware,hasPermission('logs'),async (req, res) => {
+  const { Log } = await getModels();
     try {
-      const logs = await Logs.find({}).sort({ createdAt: -1 }); // Optionally sort by date
+      const logs = await Log.find({}).sort({ createdAt: -1 }); // Optionally sort by date
       renderWithLocals(res, 'logs/logs', req, { logs });
     } catch (err) {
       console.error('Error fetching logs:', err);

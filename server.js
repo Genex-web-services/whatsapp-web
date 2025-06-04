@@ -1,17 +1,13 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require("path");
-const connectDB = require('./config/db');
 const frontendRoutes = require('./routes/frontendRoutes');
 
 // Load environment variables
 dotenv.config();
-
-// Connect to MongoDB
-connectDB();
 
 const app = express();
 
