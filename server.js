@@ -32,19 +32,8 @@ app.use(express.urlencoded({ extended: true }));
 // CORS: allow only localhost and genexwebservices.com (with subdomains support)
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5000',
-      /\.genexwebservices\.com$/ // regex for subdomains like auth.genexwebservices.com
-    ];
-
-    if (!origin) return callback(null, true); // allow REST tools or curl
-
-    const isAllowed = allowedOrigins.some((entry) =>
-      typeof entry === 'string' ? origin === entry : entry.test(origin)
-    );
-
-    if (isAllowed) {
+    const allowed = ['http://localhost:3000','http://localhost:3001', 'https://gws365.in', 'https://admin.gws365.in', 'https://auth.gws365.in', 'https://pay.gws365.in'];
+    if (!origin || allowed.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

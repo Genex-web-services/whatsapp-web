@@ -7,12 +7,12 @@ const authMiddleware = async (req, res, next) => {
   if (!token) {
     console.log('No token provided');
     return res.redirect('/login');
-  }
+  } 
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
-    const apiURL = `https://auth.gws365.in/getuserById/${userId}`;
+    const apiURL = process.env.Login_URL + `/getuserById/${userId}`;
     const response = await axios.get(apiURL);
 
     if (response.data && response.data.user) {

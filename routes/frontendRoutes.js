@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 // Login Page
 router.get('/login', async (req, res) => {
   const { gwsToken } = req.cookies;
-  const { Roles } = await getModels(); 
+   
 
   if (gwsToken) {
     return res.redirect('/dashboard');

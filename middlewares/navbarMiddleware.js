@@ -11,7 +11,7 @@ const navbarMiddleware = async (req, res, next) => {
     const userId = decoded.id;
     if (userId) {
         // Attach user info to requestx
-      const messagesRes = await axios.get(`https://auth.gws365.in/api/v1.0/client/`);
+      const messagesRes = await axios.get(process.env.Login_URL + `/api/v1.0/client/`);
       req.products = messagesRes.data || []; // attach messages
 
        // Get notifications
