@@ -11,7 +11,7 @@ function hasPermission(requiredPid) {
       if (!user) return res.redirect('/login');
 
     // Extract base URL from original request
-      const fullUrl = `${req.protocol}://${req.get('host')}`; // e.g., https://pay.gws365.in
+      const fullUrl = `https://${req.get('host')}`; // e.g., https://pay.gws365.in
       console.log('Base URL:', fullUrl);
 
       // Find product using base URL
