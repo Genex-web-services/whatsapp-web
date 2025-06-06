@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
 const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.gwsToken;
+  const token = req.cookies.gwsToken; 
 
   if (!token) {
     console.log('No token provided');

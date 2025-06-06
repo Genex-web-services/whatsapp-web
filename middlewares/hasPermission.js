@@ -43,7 +43,7 @@ function hasPermission(requiredPid) {
     }
 
       const role = await Role.findOne({ roleCode: user.roleId }); // Adjust if needed
-      console.log('Role fetched:', role);
+      // console.log('Role fetched:', role);
 
       if (role && Array.isArray(role.permissions) && role.permissions.includes("*")) {
         return next();

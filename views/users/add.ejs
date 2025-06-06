@@ -1,88 +1,140 @@
 <%- include('../partials/head') %>
-
-
 <%- include('../partials/sidebar') %>
+
 <main class="dashboard-main bg-gray-100">
-<%- include('../partials/navbar') %>
+  <%- include('../partials/navbar') %>
   <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
-   
     <div class="card h-full p-0 rounded-xl border-0 overflow-hidden">
-        <div class="card-body p-6">
-            <div class="grid grid-cols-1 lg:grid-cols-12 justify-center">
-                <div class="col-span-12 lg:col-span-10 xl:col-span-8 2xl:col-span-6 2xl:col-start-4">
-                    <div class="card border border-neutral-200 dark:border-neutral-600">
-                        <div class="card-body">
-                            <h6 class="text-base text-neutral-600 dark:text-neutral-200 mb-4">Profile Image</h6>
+      <div class="card-body p-6">
+        <div class="card border border-neutral-200 dark:border-neutral-600">
+          <div class="card-body">
+            <h6 class="text-base text-neutral-600 dark:text-neutral-200 mb-4">Create User</h6>
 
-                            <!-- Upload Image Start -->
-                            <div class="mb-6 mt-4">
-                                <div class="avatar-upload">
-                                    <div class="avatar-edit absolute bottom-0 end-0 me-6 mt-4 z-[1] cursor-pointer ">
-                                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" hidden>
-                                        <label for="imageUpload" class="w-8 h-8 flex justify-center items-center bg-primary-50 dark:bg-primary-600/25 text-primary-600 dark:text-primary-400 border border-primary-600 hover:bg-primary-100 text-lg rounded-full">
-                                            <iconify-icon icon="solar:camera-outline" class="icon"></iconify-icon>
-                                        </label>
-                                    </div>
-                                    <div class="avatar-preview">
-                                        <div id="imagePreview"> </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Upload Image End -->
+            <form id="userForm" method="POST">
+              <!-- Name -->
+              <div class="mb-5">
+                <label for="name" class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">
+                  Name
+                </label>
+                <input type="text" id="name" name="name" class="form-control rounded-lg" required />
+              </div>
 
-                            <form action="#">
-                                <div class="mb-5">
-                                    <label for="name" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Full Name <span class="text-danger-600">*</span></label>
-                                    <input type="text" class="form-control rounded-lg" id="name" placeholder="Enter Full Name">
-                                </div>
-                                <div class="mb-5">
-                                    <label for="email" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Email <span class="text-danger-600">*</span></label>
-                                    <input type="email" class="form-control rounded-lg" id="email" placeholder="Enter email address">
-                                </div>
-                                <div class="mb-5">
-                                    <label for="number" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Phone</label>
-                                    <input type="email" class="form-control rounded-lg" id="number" placeholder="Enter phone number">
-                                </div>
-                                <div class="mb-5">
-                                    <label for="depart" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Department <span class="text-danger-600">*</span> </label>
-                                    <select class="form-control rounded-lg form-select" id="depart">
-                                        <option>Enter Event Title </option>
-                                        <option>Enter Event Title One </option>
-                                        <option>Enter Event Title Two</option>
-                                    </select>
-                                </div>
-                                <div class="mb-5">
-                                    <label for="desig" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Designation <span class="text-danger-600">*</span> </label>
-                                    <select class="form-control rounded-lg form-select" id="desig">
-                                        <option>Enter Designation Title </option>
-                                        <option>Enter Designation Title One </option>
-                                        <option>Enter Designation Title Two</option>
-                                    </select>
-                                </div>
-                                <div class="mb-5">
-                                    <label for="desc" class="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">Description</label>
-                                    <textarea name="#0" class="form-control rounded-lg" id="desc" placeholder="Write description..."></textarea>
-                                </div>
-                                <div class="flex items-center justify-center gap-3">
-                                    <button type="button" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-14 py-[11px] rounded-lg">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" class="btn btn-primary border border-primary-600 text-base px-14 py-3 rounded-lg">
-                                        Save
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+              <!-- Email -->
+              <div class="mb-5">
+                <label for="email" class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">
+                  Email <span class="text-danger-600">*</span>
+                </label>
+                <input type="email" id="email" name="email" class="form-control rounded-lg" required />
+              </div>
+
+              <!-- Password -->
+              <div class="mb-5">
+                <label for="password" class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">
+                  Password <span class="text-danger-600">*</span>
+                </label>
+                <input type="password" id="password" name="password" class="form-control rounded-lg" required />
+              </div>
+
+              <!-- Tenant ID -->
+              <div class="mb-5">
+                <label for="tenantId" class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">
+                  Tenant ID <span class="text-danger-600">*</span>
+                </label>
+                <input type="text" id="tenantId" name="tenantId" class="form-control rounded-lg" value="<%= tenantId %>" <%= (currentRole?.[0]?.level === 0) ? '' : 'readonly' %> required />
+              </div>
+
+              <!-- User Type -->
+              <div class="mb-5">
+                <label for="userType" class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">
+                  User Type
+                </label>
+                <select id="userType" name="userType" class="form-control rounded-lg">
+                  <option value="single">Single</option>
+                  <option value="org">Organization</option>
+                </select>
+              </div>
+
+              <!-- Is Active -->
+              <div class="mb-5">
+                <label class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">Is Active?</label>
+                <input type="checkbox" id="isActive" name="isActive" class="form-check-input" checked />
+              </div>
+
+              <!-- Role ID -->
+             <div class="mb-5">
+                <label for="roleId" class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">
+                  Role
+                </label>
+                <select id="roleId" name="roleId" class="form-control rounded-lg">
+                  <% roles.forEach(role => { %>
+                    <option value="<%= role.roleCode %>" <%= user.roleId === role.roleCode ? 'selected' : '' %>>
+                      <%= role.name %>
+                    </option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <!-- Referred By -->
+              <div class="mb-5">
+                <label for="referredBy" class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 block">
+                  Referred By (User ID)
+                </label>
+                <input type="text" id="referredBy" name="referredBy" class="form-control rounded-lg" value="6841fb36dd9a2cc544c35a13" />
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex items-center justify-center gap-3">
+                <a href="/users/list" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-base px-14 py-[11px] rounded-lg">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary border border-primary-600 text-base px-14 py-3 rounded-lg">
+                  Save User
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
   </div>
 
-<%- include('../partials/footer') %>
-    <%- include('../partials/script') %>
-</main>
- 
+  <!-- Submission Script -->
+  <script>
+    document.getElementById('userForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-  
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value.trim(),
+        tenantId: document.getElementById('tenantId').value.trim(),
+        userType: document.getElementById('userType').value,
+        isActive: document.getElementById('isActive').checked,
+        roleId: document.getElementById('roleId').value.trim(),
+        referredBy: document.getElementById('referredBy').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/v1.0/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          alert('User created successfully');
+          window.location.href = '/users/list';
+        } else {
+          alert('Failed: ' + (result?.message || 'Unknown error'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Something went wrong');
+      }
+    });
+  </script>
+
+  <%- include('../partials/footer') %>
+  <%- include('../partials/script') %>
+</main>

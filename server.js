@@ -44,6 +44,10 @@ app.use(cors({
 
 // Routes
 app.use('/', frontendRoutes);
+app.use('/', require('./routes/role'));
+app.use('/', require('./routes/user'));
+app.use('/api/v1.0/roles-and-permission', require('./routes/Rolesandpermissionapi'));
+app.use('/api/v1.0/users', require('./routes/userapi'));
 
 // Server
 const PORT = process.env.PORT || 5000;

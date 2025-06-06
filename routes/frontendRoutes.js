@@ -3,7 +3,9 @@ const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 const navbarMiddleware = require('../middlewares/navbarMiddleware');
 const hasPermission = require('../middlewares/hasPermission');
+const accessScope = require('../middlewares/accessScope'); // ensure this is imported
 const getModels = require('../utils/getModels');
+
 // Middleware to redirect if gwsToken cookie is present
 const redirectIfLoggedIn = (req, res, next) => {
   const { gwsToken } = req.cookies;
@@ -40,19 +42,22 @@ router.get('/login', async (req, res) => {
   const queryParams = req.query;
   res.render('authentication/signin.ejs', {
     queryParams,
-    Roles,
     user: req.user || null,
-    products: req.products || [],
+    products: req.products || [], 
 notifications: req.notification || [],
   });
 });
 
 // Dashboard Page
-router.get('/dashboard', authMiddleware, navbarMiddleware, async (req, res) => {
+router.get('/dashboard', authMiddleware, navbarMiddleware, accessScope(), async (req, res) => {
   try {
+    const products = (req.products || []).filter(
+      p => p.product_code !== 'genexpay' && p.product_code !== 'apicenter' && p.product_code !== 'admincenter'&& p.product_code !== 'partnerportal'
+    );
+
     res.render('dashboard/index', { 
       user: req.user,
-      products: req.products || [],
+      products: products,
       notifications: req.notification || [],
     });
   } catch (error) {
@@ -61,8 +66,9 @@ router.get('/dashboard', authMiddleware, navbarMiddleware, async (req, res) => {
   }
 });
 
+
 // OAuth Callback
-router.get('/auth/callback', (req, res) => {
+router.get('/auth/callback',accessScope(), (req, res) => {
   const { gwsToken } = req.cookies;
 
   if (gwsToken) {
@@ -72,54 +78,12 @@ router.get('/auth/callback', (req, res) => {
   }
 });
 
-
-// // Admin/User List
-router.get('/Roles-and-permission/list',authMiddleware,navbarMiddleware,hasPermission('list_role'), async (req, res) => {
-  const { Role } = await getModels();  
-  try {
-      const roles = await Role.find({});
-      renderWithLocals(res, 'role/list', req, { roles });
-    } catch (err) {
-      console.error('Error fetching Roles:', err);
-      res.status(500).send('Internal Server Error');
-    }
-  }
-);
-
-router.get('/Roles-and-permission/add',authMiddleware,navbarMiddleware,hasPermission('add_role'), async (req, res) => {
-
-  const {Role} = await getModels();
-    try {
-      const Roles = await Role.find({});
-      renderWithLocals(res, 'role/add', req, { Roles });
-    } catch (err) {
-      console.error('Error fetching Roles:', err);
-      res.status(500).send('Internal Server Error');
-    }
-  }
-);
-router.get('/users/list', authMiddleware, navbarMiddleware,hasPermission('list_user'), async (req, res) => {
-  const { User } = await getModels();
-    try {
-        const users = await User.find({}); // Fetch all users
-        renderWithLocals(res, 'users/list', req, { users });
-    } catch (error) {
-        console.error("Error fetching users: ", error);
-        res.status(500).send('Error fetching users');
-    }
-});
-router.get('/users/add',authMiddleware,navbarMiddleware,hasPermission('add_user'),async(req, res) => {
-  const { User} = await getModels();
-    renderWithLocals(res, 'users/add', req,{
-        User:User.find({}),
-      });
-  }
-);
 // Tenants
-router.get('/tenants/list',authMiddleware,navbarMiddleware,hasPermission('list_tenant'),async (req, res) => {
+router.get('/tenants/list',authMiddleware,navbarMiddleware,hasPermission('list_tenant'),accessScope(),async (req, res) => {
   const { Tenant} = await getModels();  
   try {
-      const tenants = await Tenant.find({});
+    console.log('Fetching tenants with filter:', req.filter);
+      const tenants = await Tenant.find(req.filter);
       renderWithLocals(res, 'tenants/list', req, {
         tenants
       });
@@ -130,7 +94,7 @@ router.get('/tenants/list',authMiddleware,navbarMiddleware,hasPermission('list_t
   }
 );
 
-router.get('/tenants/add',authMiddleware,navbarMiddleware,hasPermission('add_tenant'),async(req, res) => {
+router.get('/tenants/edit/:id',authMiddleware,navbarMiddleware,hasPermission('edit_tenant'),accessScope(),async(req, res) => {
   const { Tenant} = await getModels();
     renderWithLocals(res, 'tenants/add', req,{
          Tenant:Tenant.find({}),
@@ -139,10 +103,10 @@ router.get('/tenants/add',authMiddleware,navbarMiddleware,hasPermission('add_ten
 );
 
 // Organisations
-router.get('/organisation/list', authMiddleware, navbarMiddleware,hasPermission('list_organisation'), async (req, res) => {  
+router.get('/organisation/list', authMiddleware, navbarMiddleware,hasPermission('list_organisation'),accessScope(), async (req, res) => {  
   const { Organization} = await getModels();
   try {
-    const organizations = await Organization.find({});
+    const organizations = await Organization.find(req.filter);
     renderWithLocals(res, 'organisation/list', req, { organizations });
   } catch (err) {
     console.error(err);
@@ -150,40 +114,12 @@ router.get('/organisation/list', authMiddleware, navbarMiddleware,hasPermission(
   }
 });
 
-router.get('/organisation/add',authMiddleware,hasPermission('add_organisation'),navbarMiddleware,async(req, res) => {
-  const { Organization} = await getModels();
-    renderWithLocals(res, 'organisation/add', req,{
-         Organization:Organization.find({}),
-      });
-  }
-);
-
-// Products
-router.get('/products/list',  authMiddleware,  navbarMiddleware,hasPermission('list_product'), async(req, res) => {
-  const { Product} = await getModels();
-    renderWithLocals(res, 'products/list', req,{ Product:Product.find({}),});
-  }
-);
-router.get('/products/add',authMiddleware,navbarMiddleware,hasPermission('add_product'),async(req, res) => {
-    const { Product} = await getModels();      
-    renderWithLocals(res, 'products/add', req,{
-         Product:Product.find({}),
-      });
-  }
-);
-router.get('/products/pricing',authMiddleware,navbarMiddleware,async(req, res) => {
-  const { Product} = await getModels();
-    renderWithLocals(res, 'products/pricing', req,{
-         Product:Product.find({}),
-      });
-  }
-);
 
 // Logs
-router.get('/logs',authMiddleware,navbarMiddleware,hasPermission('logs'),async (req, res) => {
+router.get('/logs',authMiddleware,navbarMiddleware,accessScope(),hasPermission('logs'),async (req, res) => {
   const { Log } = await getModels();
     try {
-      const logs = await Log.find({}).sort({ createdAt: -1 }); // Optionally sort by date
+      const logs = await Log.find({email:req.user.email}).sort({ createdAt: -1 }); // Optionally sort by date
       renderWithLocals(res, 'logs/logs', req, { logs });
     } catch (err) {
       console.error('Error fetching logs:', err);
@@ -196,7 +132,7 @@ router.get('/logs',authMiddleware,navbarMiddleware,hasPermission('logs'),async (
 router.get(
   '/settings/company',
   authMiddleware,
-  navbarMiddleware,
+  navbarMiddleware,accessScope(),
   (req, res) => {
     renderWithLocals(res, 'settings/company', req);
   }
@@ -204,7 +140,7 @@ router.get(
 router.get(
   '/settings/notification',
   authMiddleware,
-  navbarMiddleware,
+  navbarMiddleware,accessScope(),
   (req, res) => {
     renderWithLocals(res, 'settings/notification', req);
   }
@@ -212,7 +148,7 @@ router.get(
 router.get(
   '/settings/notificationAlert',
   authMiddleware,
-  navbarMiddleware,
+  navbarMiddleware,accessScope(),
   (req, res) => {
     renderWithLocals(res, 'settings/notificationAlert', req);
   }
@@ -220,7 +156,7 @@ router.get(
 router.get(
   '/settings/theme',
   authMiddleware,
-  navbarMiddleware,
+  navbarMiddleware,accessScope(),
   (req, res) => {
     renderWithLocals(res, 'settings/theme', req);
   }
@@ -228,7 +164,7 @@ router.get(
 router.get(
   '/settings/currencies',
   authMiddleware,
-  navbarMiddleware,
+  navbarMiddleware,accessScope(),
   (req, res) => {
     renderWithLocals(res, 'settings/currencies', req);
   }
@@ -236,7 +172,7 @@ router.get(
 router.get(
   '/settings/language',
   authMiddleware,
-  navbarMiddleware,
+  navbarMiddleware,accessScope(),
   (req, res) => {
     renderWithLocals(res, 'settings/language', req);
   }
@@ -244,7 +180,7 @@ router.get(
 router.get(
   '/settings/paymentGateway',
   authMiddleware,
-  navbarMiddleware,
+  navbarMiddleware,accessScope(),
   (req, res) => {
     renderWithLocals(res, 'settings/paymentGateway', req);
   }
