@@ -6,7 +6,7 @@ const hasPermission = require('../middlewares/hasPermission');
 const accessScope = require('../middlewares/accessScope'); // ensure this is imported
 const getModels = require('../utils/getModels'); // Ensure this points to your utility function
 const { redirectIfLoggedIn, renderWithLocals } = require('../middlewares/common'); // adjust path as needed
-
+const handleError = require('../utils/handleError');
 // 📝 1. List Roles (Exclude 'superAdmin')
 router.get('/Roles-and-permission/list',
   authMiddleware,

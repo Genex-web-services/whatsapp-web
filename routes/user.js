@@ -6,7 +6,7 @@ const hasPermission = require('../middlewares/hasPermission');
 const accessScope = require('../middlewares/accessScope');
 const getModels = require('../utils/getModels');
 const { redirectIfLoggedIn, renderWithLocals } = require('../middlewares/common'); // adjust path as needed
-
+const handleError = require('../utils/handleError');
 router.get('/users/list',
   authMiddleware,
   navbarMiddleware,

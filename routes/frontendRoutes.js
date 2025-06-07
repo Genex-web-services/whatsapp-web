@@ -5,7 +5,7 @@ const navbarMiddleware = require('../middlewares/navbarMiddleware');
 const hasPermission = require('../middlewares/hasPermission');
 const accessScope = require('../middlewares/accessScope'); // ensure this is imported
 const getModels = require('../utils/getModels');
-
+const handleError = require('../utils/handleError');
 // Middleware to redirect if gwsToken cookie is present
 const redirectIfLoggedIn = (req, res, next) => {
   const { gwsToken } = req.cookies;
