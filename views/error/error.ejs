@@ -5,7 +5,7 @@
     <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
          <%= message || 'Something went wrong.' %>
     </p>
-     <% if (error) { %>
+     <% if (typeof error !== 'undefined' && error) { %>
         <pre class="text-left p-4 bg-gray-100 dark:bg-neutral-900 rounded text-sm overflow-x-auto"><%= JSON.stringify(error, null, 2) %></pre>
       <% } %>
       <div class="mt-6 space-y-2">
