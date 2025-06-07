@@ -1,19 +1,25 @@
 const getModels = require('../utils/getModels');
+const handleError = require('../utils/handleError');
 
 async function checkBilling(req, res, next) {
   try {
-     const { Billing, Invoices, Wallet, Product, Tenant } = await getModels();
+    const { Billing } = await getModels();
+
     const tenantId = req.query.tenant_id || req.headers['x-tenant-id'];
     const productId = req.query.product_id || req.headers['x-product-id'];
 
     if (!tenantId || !productId) {
-      return res.status(400).send('Missing tenant_id or product_id');
+      return handleError(res, {
+        status: 400,
+        message: 'Missing tenant or product information.',
+        buttons: [
+          { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+          { text: 'Contact Support', href: 'mailto:support@gws365.in', style: 'danger' }
+        ]
+      });
     }
 
-    const billing = await Billing.findOne({
-      tenantId,
-      productId
-    }).sort({ currentCycleEnd: -1 }); // Get the latest billing entry
+    const billing = await Billing.findOne({ tenantId, productId }).sort({ currentCycleEnd: -1 });
 
     if (!billing) {
       return res.redirect('https://pay.gws365.in?reason=no-billing-found');
@@ -25,13 +31,22 @@ async function checkBilling(req, res, next) {
       return res.redirect('https://pay.gws365.in?reason=expired');
     }
 
-    // Optional: attach billing info to request
     req.billing = billing;
+    return next();
 
-    next();
   } catch (err) {
     console.error('Billing middleware error:', err);
-    res.status(500).send('Billing check failed');
+    return handleError(res, {
+      status: 500,
+      message: 'Something went wrong during the billing check.',
+      error: err.message,
+      buttons: [
+        { text: 'Retry', href: 'javascript:location.reload()', style: 'secondary' },
+        { text: 'Go to Dashboard', href: '/dashboard', style: 'primary' },
+        { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+      ]
+    });
   }
-};
-module.exports = checkBilling
+}
+
+module.exports = checkBilling;

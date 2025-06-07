@@ -19,7 +19,16 @@ router.get('/users/list',
       renderWithLocals(res, 'users/list', req, { users });
     } catch (error) {
       console.error("Error fetching users: ", error);
-      res.status(500).send('Error fetching users');
+      return handleError(res, {
+        status: 500,
+        message: 'Server Error. Error fetching users.',
+        type: 'text', // or 'html' or 'json' depending on context
+        error: null,
+        buttons: [
+          { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+          { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+        ]
+      });
     }
   }
 );  
@@ -61,7 +70,16 @@ router.get('/users/edit/:id',
       });
     } catch (error) {
       console.error("Error loading user for edit: ", error);
-      res.status(500).send('Error loading user');
+      return handleError(res, {
+        status: 500,
+        message: 'Server Error.',
+        type: 'text', // or 'html' or 'json' depending on context
+        error: null,
+        buttons: [
+          { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+          { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+        ]
+      });
     }
   }
 );
@@ -77,12 +95,18 @@ router.get('/users/delete/:id',
       res.redirect('/users/list');
     } catch (error) {
       console.error("Error deleting user: ", error);
-      res.status(500).send('Error deleting user');
+     return handleError(res, {
+        status: 500,
+        message: 'Server Error. Error fetching users.',
+        type: 'text', // or 'html' or 'json' depending on context
+        error: null,
+        buttons: [
+          { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+          { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+        ]
+      });
     }
   }
 );
-
-
-
 
 module.exports = router;

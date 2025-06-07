@@ -23,7 +23,16 @@ router.get('/Roles-and-permission/list',
       renderWithLocals(res, 'role/list', req, { roles,products,currentRole  });
     } catch (err) {
       console.error('Error fetching Roles:', err);
-      res.status(500).send('Internal Server Error');
+      return handleError(res, {
+  status: 500,
+  message: 'Server Error. Please try again later.',
+  type: 'text', // or 'html' or 'json' depending on context
+  error: null,
+  buttons: [
+    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+  ]
+});
     }
   }
 );
@@ -45,7 +54,16 @@ router.get('/Roles-and-permission/add',
       renderWithLocals(res, 'role/add', req, { role:Roles,Type:'add',product,currentRole,tenantId: req.user.tenantId });
     } catch (err) {
       console.error('Error rendering Add Role:', err);
-      res.status(500).send('Internal Server Error');
+      return handleError(res, {
+  status: 500,
+  message: 'Server Error. Please try again later.',
+  type: 'text', // or 'html' or 'json' depending on context
+  error: null,
+  buttons: [
+    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+  ]
+});
     }
   }
 );
@@ -67,7 +85,16 @@ router.get('/Roles-and-permission/edit/:id',
       renderWithLocals(res, 'role/add', req, { role,Type:'edit',product,currentRole,tenantId: req.user.tenantId  });
     } catch (err) {
       console.error('Error loading role for editing:', err);
-      res.status(500).send('Internal Server Error');
+      return handleError(res, {
+  status: 500,
+  message: 'Server Error. Please try again later.',
+  type: 'text', // or 'html' or 'json' depending on context
+  error: null,
+  buttons: [
+    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+  ]
+});
     }
   }
 );
@@ -87,7 +114,16 @@ router.get('/Roles-and-permission/view/:id',
       renderWithLocals(res, 'role/view', req, { role,Product });
     } catch (err) {
       console.error('Error fetching role details:', err);
-      res.status(500).send('Internal Server Error');
+      return handleError(res, {
+  status: 500,
+  message: 'Server Error. Please try again later.',
+  type: 'text', // or 'html' or 'json' depending on context
+  error: null,
+  buttons: [
+    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+  ]
+});
     }
   }
 );

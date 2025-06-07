@@ -1,11 +1,19 @@
 const getModels = require('../utils/getModels');
+const handleError = require('../utils/handleError');
 
 const accessScope = () => {
   return async (req, res, next) => {
     try {
       const user = req.user;
       if (!user) {
-        return res.status(401).json({ message: 'Unauthorized: User not found' });
+        return handleError(res, {
+          status: 401,
+          message: 'Unauthorized: User not found',
+          buttons: [
+            { text: 'Login Again', href: '/login', style: 'primary' },
+            { text: 'Go Home', href: '/', style: 'secondary' }
+          ]
+        });
       }
 
       const { Role } = await getModels();
@@ -13,18 +21,23 @@ const accessScope = () => {
       const roles = await Role.findOne({ roleCode }).lean();
 
       if (!roles) {
-        return res.status(403).json({ message: 'Forbidden: Role not found' });
+        return handleError(res, {
+          status: 403,
+          message: 'Forbidden: Role not found',
+          buttons: [
+            { text: 'Back to Dashboard', href: '/dashboard', style: 'primary' },
+            { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+          ]
+        });
       }
 
       const level = roles.level;
-      req.scopeLevel = level; // optional but useful
+      req.scopeLevel = level;
 
-      // Determine context by route
       const url = req.originalUrl;
 
-      // Filter logic
+      // Scope filter logic
       if (url.includes('/tenants')) {
-        // Tenant model logic
         switch (level) {
           case 0:
             req.filter = {};
@@ -32,12 +45,10 @@ const accessScope = () => {
           case 1:
             req.filter = { _id: { $in: user.assignedTenantIds || [] } };
             break;
-          case 2:
           default:
             req.filter = { _id: user.tenantId };
         }
       } else if (url.includes('/users')) {
-        // User model logic
         switch (level) {
           case 0:
             req.filter = {};
@@ -52,7 +63,6 @@ const accessScope = () => {
             req.filter = { tenantId: user.tenantId, _id: user._id };
         }
       } else {
-        // Default logic for other models
         switch (level) {
           case 0:
             req.filter = {};
@@ -68,10 +78,19 @@ const accessScope = () => {
         }
       }
 
-      next();
+      return next();
+
     } catch (error) {
       console.error('Access Scope Middleware Error:', error);
-      res.status(500).json({ message: 'Internal Server Error in accessScope' });
+      return handleError(res, {
+        status: 500,
+        message: 'Internal Server Error in accessScope',
+        error: error.message,
+        buttons: [
+          { text: 'Back to Dashboard', href: '/dashboard', style: 'primary' },
+          { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+        ]
+      });
     }
   };
 };

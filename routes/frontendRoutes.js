@@ -62,7 +62,16 @@ router.get('/dashboard', authMiddleware, navbarMiddleware, accessScope(), async 
     });
   } catch (error) {
     console.error('Dashboard Error:', error);
-    res.status(500).send('Server Error');
+    return handleError(res, {
+        status: 500,
+        message: 'Server Error. Please try again later.',
+        type: 'text', // or 'html' or 'json' depending on context
+        error: null,
+        buttons: [
+          { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+          { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+        ]
+      });
   }
 });
 
@@ -89,7 +98,16 @@ router.get('/tenants/list',authMiddleware,navbarMiddleware,hasPermission('list_t
       });
     } catch (error) {
       console.error('Error fetching tenants:', error);
-      res.status(500).send('Internal Server Error');
+      return handleError(res, {
+  status: 500,
+  message: 'Server Error. Please try again later.',
+  type: 'text', // or 'html' or 'json' depending on context
+  error: null,
+  buttons: [
+    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+  ]
+});
     }
   }
 );
@@ -110,7 +128,16 @@ router.get('/organisation/list', authMiddleware, navbarMiddleware,hasPermission(
     renderWithLocals(res, 'organisation/list', req, { organizations });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server Error');
+   return handleError(res, {
+  status: 500,
+  message: 'Server Error. Please try again later.',
+  type: 'text', // or 'html' or 'json' depending on context
+  error: null,
+  buttons: [
+    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+  ]
+});
   }
 });
 
@@ -123,7 +150,16 @@ router.get('/logs',authMiddleware,navbarMiddleware,accessScope(),hasPermission('
       renderWithLocals(res, 'logs/logs', req, { logs });
     } catch (err) {
       console.error('Error fetching logs:', err);
-      res.status(500).send('Internal Server Error');
+      return handleError(res, {
+  status: 500,
+  message: 'Server Error. Please try again later.',
+  type: 'text', // or 'html' or 'json' depending on context
+  error: null,
+  buttons: [
+    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
+    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
+  ]
+});
     }
   }
 );
