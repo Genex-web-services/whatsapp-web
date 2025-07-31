@@ -1,0 +1,21 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head') %>
+
+
+<%- include('../partials/sidebar') %>
+<main class="dashboard-main bg-gray-100">
+<%- include('../partials/navbar') %>
+  <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
+  <iframe src="/api-docs/" class="w-full" style="height: 700px;" frameborder="0"></iframe>
+
+  </div>
+
+<%- include('../partials/footer') %>
+    <%- include('../partials/script') %>
+</main>    
+
+</body>
+</html>

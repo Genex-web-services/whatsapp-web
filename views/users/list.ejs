@@ -1,80 +1,21 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en">
+
 <%- include('../partials/head') %>
-<!-- DataTable CSS -->
-<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
-<!-- DataTable JS -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
 
 <%- include('../partials/sidebar') %>
 <main class="dashboard-main bg-gray-100">
-  <%- include('../partials/navbar') %>
+<%- include('../partials/navbar') %>
   <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
-    <div class="grid grid-cols-12">
-      <div class="col-span-12">
-        <div class="card h-full p-0 rounded-xl border-0 overflow-hidden">
-          <div class="card-header border-b border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 py-4 px-6 flex items-center flex-wrap gap-3 justify-content-end">
-            
-            <a href="/users/add" class="btn btn-primary text-sm btn-sm px-3 py-3 rounded-lg flex items-center gap-2">
-              <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-              Add New User
-            </a>
-          </div>
-          <div class="card-body p-6">
-            <div class="table-responsive scroll-sm">
-                <table id="userTable" class="table bordered-table sm-table mb-0">
-                  <thead>
-                    <tr>
-                      <th scope="col">
-                        <div class="flex items-left gap-10">
-                        
-                          S.L
-                        </div>
-                      </th>
-                      <th scope="col">Join Date</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">User Type</th>
-                      <th scope="col">Role</th>
-                      <th scope="col" class="text-center">Status</th>
-                      <th scope="col" class="text-center">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Loop through each user in the users array -->
-                    <% users.forEach((user, index) => { %>
-                      <tr>
-                        <td><%= index + 1 %></td>
-                        <td><%= user.createdAt.toLocaleDateString() %></td>
-                        <td><%= user.name %></td>
-                        <td><%= user.email %></td>
-                        <td><%= user.userType %></td>
-                        <td class="text-uppercase"><%= user.roleId %></td>
-                        <td class="text-center">
-                          <span class="bg-<%= user.isActive ? 'success' : 'neutral' %>-100 dark:bg-<%= user.isActive ? 'success' : 'neutral' %>-600/25 text-<%= user.isActive ? 'success' : 'neutral' %>-600 dark:text-<%= user.isActive ? 'success' : 'neutral' %>-400 px-6 py-1.5 rounded font-medium text-sm">
-                            <%= user.isActive ? 'Active' : 'Inactive' %>
-                          </span>
-                        </td>
-                        <td class="text-center">
-                          <button class="bg-info-100 dark:bg-info-600/25 hover:bg-info-200 text-info-600 dark:text-info-400 w-10 h-10 rounded-full">V</button>
-                          <button class="bg-success-100 dark:bg-success-600/25 text-success-600 dark:text-success-400 w-10 h-10 rounded-full">E</button>
-                          <button class="bg-danger-100 dark:bg-danger-600/25 hover:bg-danger-200 text-danger-600 dark:text-danger-500 w-10 h-10 rounded-full">D</button>
-                        </td>
-                      </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
-            </div>
-            <div class="flex items-center justify-between flex-wrap gap-2 mt-6">
-              <span>Showing <%= users.length %> entries</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  
+
   </div>
 
-  <%- include('../partials/footer') %>
-  <%- include('../partials/script') %>
-</main>
+<%- include('../partials/footer') %>
+    <%- include('../partials/script') %>
+</main>    
 
-
+</body>
+</html>

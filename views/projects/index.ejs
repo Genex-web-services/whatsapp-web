@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+
+<body>
+<main class="bg-gray-100">
+  <%- include('../partials/navbar') %>
+
+  <div class="dashboard-main-body p-6 h-100">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Projects</h2>
+      <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="openAddModal()">Add Project</button>
+    </div>
+
+    <table class="w-full bg-white shadow rounded">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="p-3 text-left">#</th>
+          <th class="p-3 text-left">Name</th>
+          <th class="p-3 text-left">Tenant ID</th>
+          <th class="p-3 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="projectTableBody">
+        <!-- Filled via JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+<!-- Modal -->
+<div id="projectModal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+  <div class="bg-white rounded p-6 w-full max-w-md">
+    <h3 class="text-lg font-semibold mb-4" id="modalTitle">Add Project</h3>
+    <form id="projectForm">
+      <input type="hidden" id="projectId">
+      <input type="hidden" id="tenantId" value="<%= user.tenantId %>">
+      <div class="mb-3">
+        <label class="block mb-1">Project Name</label>
+        <input type="text" id="projectName" class="w-full border rounded px-3 py-2" required>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+  <script>
+    const tenantId = "<%= user.tenantId %>";
+    const modal = document.getElementById('projectModal');
+    const form = document.getElementById('projectForm');
+    const title = document.getElementById('modalTitle');
+    const projectIdInput = document.getElementById('projectId');
+    const projectNameInput = document.getElementById('projectName');
+    const tenantIdInput = document.getElementById('tenantId');
+
+    function openAddModal() {
+      title.textContent = 'Add Project';
+      projectIdInput.value = '';
+      projectNameInput.value = '';
+      modal.classList.remove('hidden');
+    }
+
+    function openEditModal(project) {
+      title.textContent = 'Edit Project';
+      projectIdInput.value = project._id;
+      projectNameInput.value = project.name;
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+    }
+
+  function loadProjects() {
+  fetch(`/api/projects/${tenantId}/index`)
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.getElementById('projectTableBody');
+      tbody.innerHTML = '';
+      if (data.success && Array.isArray(data.projects)) {
+        data.projects.forEach((project, index) => {
+          tbody.innerHTML += `
+            <tr class="border-t">
+              <td class="p-3">${index + 1}</td>
+              <td class="p-3">${project.name}</td>
+              <td class="p-3">${project.tenantId}</td>
+              <td class="p-3">
+               
+                <a class="text-green-600" href="/dashboard/${project._id}/index">View</a>
+                 <button class="text-green-600" onclick='openEditModal(${JSON.stringify(project)})'>Edit</button>
+                <button class="text-red-600 ml-3" onclick='deleteProject("${project._id}")'>Delete</button>
+              </td>
+            </tr>
+          `;
+        });
+      } else {
+        tbody.innerHTML = '<tr><td colspan="4" class="p-3 text-center">No projects found.</td></tr>';
+      }
+    })
+    .catch(error => {
+      console.error('Error loading projects:', error);
+    });
+}
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const id = projectIdInput.value;
+      const data = {
+        name: projectNameInput.value,
+        description: '', // Optional
+      };
+
+      const url = id
+        ? `/api/projects/${tenantId}/edit/${id}`
+        : `/api/projects/${tenantId}/add`;
+      const method = id ? 'PUT' : 'POST';
+
+      fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(() => {
+          closeModal();
+          loadProjects();
+        });
+    });
+
+    function deleteProject(id) {
+      if (!confirm('Are you sure you want to delete this project?')) return;
+      fetch(`/api/projects/${tenantId}/delete/${id}`, {
+        method: 'DELETE'
+      })
+        .then(res => res.json())
+        .then(() => loadProjects());
+    }
+
+    window.onload = loadProjects;
+  </script>
+  <%- include('../partials/footer') %>
+  <%- include('../partials/script') %>
+
+</main>
+</body>
+</html>

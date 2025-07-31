@@ -9,117 +9,134 @@
             <img src="<%= env.Assets_URL%>/images/gws365/logo.png" alt="site logo" class="logo-icon">
         </a>
     </div>
-    <div class="sidebar-menu-area">
-        <ul class="sidebar-menu" id="sidebar-menu">
-            <li>
-                <a href="/dashboard">
-                    <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="sidebar-menu-group-title">Admin/User List</li>
+  <div class="sidebar-menu-area">
+    <ul class="sidebar-menu" id="sidebar-menu">
+        <li class="sidebar-menu-group-title">WhatsApp Session</li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('index')">
+                <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('qr-scan')">
+                <iconify-icon icon="mdi:qrcode-scan" class="menu-icon"></iconify-icon>
+                <span>QR Scan / Session</span>
+            </a>
+        </li>
 
+        <li class="sidebar-menu-group-title">Messaging</li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('send-message')">
+                <iconify-icon icon="mdi:message-text-outline" class="menu-icon"></iconify-icon>
+                <span>Manual Sender</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('bulk-sender')">
+                <iconify-icon icon="mdi:send-circle-outline" class="menu-icon"></iconify-icon>
+                <span>Bulk Sender</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('scheduled-messages')">
+                <iconify-icon icon="mdi:calendar-clock-outline" class="menu-icon"></iconify-icon>
+                <span>Scheduled Messages</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('auto-reply')">
+                <iconify-icon icon="mdi:robot-outline" class="menu-icon"></iconify-icon>
+                <span>Auto Replies</span>
+            </a>
+        </li>
 
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                    <span>Users</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="/users/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
-                    </li>
-                    <li>
-                        <a href="/users/add"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add User</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                    <span>Roles & Permissons</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="/roles-and-permission/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Roles List</a>
-                    </li>
-                    <li>
-                        <a href="/roles-and-permission/add"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add New Roles</a>
-                    </li>
-                </ul>
-            </li>
+        <li class="sidebar-menu-group-title">Templates & Contacts</li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('templates')">
+                <iconify-icon icon="mdi:file-document-outline" class="menu-icon"></iconify-icon>
+                <span>Message Templates</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('contacts')">
+                <iconify-icon icon="mdi:account-multiple-outline" class="menu-icon"></iconify-icon>
+                <span>Contacts</span>
+            </a>
+        </li>
 
-            <li class="sidebar-menu-group-title">Tenants</li>
+        <li class="sidebar-menu-group-title">Reports & Logs</li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('message-logs')">
+                <iconify-icon icon="mdi:history" class="menu-icon"></iconify-icon>
+                <span>Message Logs</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('activity-logs')">
+                <iconify-icon icon="mdi:file-document-box-outline" class="menu-icon"></iconify-icon>
+                <span>Activity Logs</span>
+            </a>
+        </li>
 
+        <li class="sidebar-menu-group-title">Custom Ue</li>
+        <li>
+            <a href="javascript:void(0)" onclick="navigateTo('api')">
+                <iconify-icon icon="mdi:history" class="menu-icon"></iconify-icon>
+                <span>Api</span>
+            </a>
+        </li>
 
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                    <span>Tenants</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="/tenants/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Tenants List</a>
-                    </li>
-                </ul>
-            </li>
+        <li class="sidebar-menu-group-title">Settings</li>
+        <li class="dropdown">
+            <a href="javascript:void(0)">
+                <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>
+                <span>System Settings</span>
+            </a>
+            <ul class="sidebar-submenu">
+                <li>
+                    <a href="javascript:void(0)" onclick="navigateTo('settings/general')"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> General</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="navigateTo('settings/notification')"><i class="ri-circle-fill circle-icon text-warning-600 w-auto"></i> Notification</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="navigateTo('settings/api')"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> API/Webhooks</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="navigateTo('settings/theme')"><i class="ri-circle-fill circle-icon text-danger-600 w-auto"></i> Theme</a>
+                </li>
+            </ul>
+        </li>
 
-            <li class="sidebar-menu-group-title">Organisations</li>
+        <li class="sidebar-menu-group-title">Users</li>
+        <li class="dropdown">
+            <a href="javascript:void(0)">
+                <iconify-icon icon="mdi:account-cog-outline" class="menu-icon"></iconify-icon>
+                <span>Users</span>
+            </a>
+            <ul class="sidebar-submenu">
+                <li>
+                    <a href="javascript:void(0)" onclick="navigateTo('users/list')"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" onclick="navigateTo('users/add')"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Add User</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<script>
+  const tenantId = "<%= user?.tenantId || '' %>";
 
+  function navigateTo(path) {
+    if (!tenantId) {
+      window.location.href = "/projects";
+    } else {
+      path = path.replace(/^\/+/, ''); // remove leading slash if any
+      window.location.href = `/dashboard/${tenantId}/${path}`;
+    }
+  }
+</script>
 
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-                    <span>Organisation</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="/organisation/list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Organisation List</a>
-                    </li>
-                </ul>
-            </li>
-
-
-            <li class="sidebar-menu-group-title">Others</li>
-
-            
-            <li>
-                <a href="/logs">
-                    <iconify-icon icon="hugeicons:money-send-square" class="menu-icon"></iconify-icon>
-                    <span>Activity Logs</span>
-                </a>
-            </li>
-            
-            
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="icon-park-outline:setting-two" class="menu-icon"></iconify-icon>
-                    <span>Settings</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="/settings/company"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Company</a>
-                    </li>
-                    <li>
-                        <a href="/settings/notification"><i class="ri-circle-fill circle-icon text-warning-600 w-auto"></i> Notification</a>
-                    </li>
-                    <li>
-                        <a href="/settings/notificationAlert"><i class="ri-circle-fill circle-icon text-info-600 w-auto"></i> Notification Alert</a>
-                    </li>
-                    <li>
-                        <a href="/settings/theme"><i class="ri-circle-fill circle-icon text-danger-600 w-auto"></i> Theme</a>
-                    </li>
-                    <li>
-                        <a href="/settings/currencies"><i class="ri-circle-fill circle-icon text-danger-600 w-auto"></i> Currencies</a>
-                    </li>
-                    <li>
-                        <a href="/settings/language"><i class="ri-circle-fill circle-icon text-danger-600 w-auto"></i> Languages</a>
-                    </li>
-                    <li>
-                        <a href="/settings/paymentGateway"><i class="ri-circle-fill circle-icon text-danger-600 w-auto"></i> Payment Gateway</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
 </aside>

@@ -1,0 +1,81 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head') %>
+
+
+<%- include('../partials/sidebar') %>
+<main class="dashboard-main bg-gray-100">
+<%- include('../partials/navbar') %>
+  <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
+  
+ <div class="bg-white shadow-xl rounded-2xl p-10 max-w-md w-full text-center">
+    <h1 class="text-2xl font-bold text-[#14715B] mb-4">Scan QR Code</h1>
+    <p class="text-gray-600 mb-6">Open WhatsApp on your phone → Settings → Linked Devices → Scan the QR</p>
+    <button onclick="reconnectNow()" style="color: white;background-color: black;" class="px-4 py-2 mb-2 rounded">
+Force Reconnect
+</button>
+
+    <!-- QR Image Placeholder -->
+    <div id="qrContainer" class="flex justify-center items-center h-64 border border-dashed border-gray-400 rounded-lg mb-6 bg-gray-50">
+      <!-- Dynamically injected QR code will appear here -->
+      <img id="qrImage" src="/api/generate-qr" width="300" height="300" />
+
+    </div>
+
+    <!-- Status -->
+    <div id="statusMessage" class="text-sm text-gray-500">Waiting for scan...</div>
+  </div>
+
+<script>
+  function regenerateQR() {
+    document.getElementById('qrImage').src = `/api/generate-qr?time=${Date.now()}`;
+  }
+
+  // Refresh QR code every 30 seconds regardless
+  setInterval(regenerateQR, 30000);
+
+  // Poll for login success every 5 seconds
+  setInterval(() => {
+    fetch('/api/check-login-status')
+      .then(res => res.json())
+      .then(data => {
+        if (data.connected) {
+          document.getElementById('qrImage').style.display = 'none'; // Hide QR code
+          document.getElementById('qrContainer').classList.add('hidden'); // Hide container
+          document.getElementById('statusMessage').textContent = 'Already Connected successfully!';
+        setInterval(() => {
+    window.location.href = window.location.href;
+  }, 120000); // 120000 ms = 2 minutes
+        } else {
+          document.getElementById('statusMessage').textContent = 'Waiting for scan...';
+          regenerateQR(); // Regenerate QR on failure
+        }
+      });
+  }, 5000);
+</script>
+
+
+<script>
+  function reconnectNow() {
+    fetch('/api/reconnect')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Session cleared. QR Code regenerated.');
+          location.reload();
+        } else {
+          alert('Reconnect failed: ' + data.error);
+        }
+      });
+  }
+</script>
+  </div>
+
+<%- include('../partials/footer') %>
+    <%- include('../partials/script') %>
+</main>    
+
+</body>
+</html>

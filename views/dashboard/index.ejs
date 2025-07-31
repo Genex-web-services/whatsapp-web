@@ -9,31 +9,82 @@
 <main class="dashboard-main bg-gray-100">
 <%- include('../partials/navbar') %>
   <div class="dashboard-main-body bg-gray-100 dark:bg-neutral-800 min-h-screen">
-    <div class="mb-10">
-                <h6 class="mb-6">Our Products </h6>
-                <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-6">
-                    
-                    <% products.forEach(product => { %>
-                      <div class="card h-full rounded-xl overflow-hidden border-0">
-                        <div class="card-body p-6">
-                          <div class="w-[64px] h-[64px] inline-flex items-center justify-center bg-purple-200 dark:bg-purple-600/25 dark:text-purple-500 text-purple-600 mb-4 rounded-xl">
-                            <iconify-icon icon="<%= product.icon || 'solar:medal-ribbons-star-bold' %>" class="h5 mb-0"></iconify-icon>
-                          </div>
-                          <h6 class="mb-2"><%= product.product_name %></h6>
-                          <p class="card-text mb-2 text-secondary-light"><%= product.product_description %></p>
-                          <a href="<%= product.product_url %>" target="_blank"
-   class="btn dark:text-purple-600 text-purple-600 hover:underline px-0 py-0 mt-4 inline-flex items-center gap-2">
-  Login Now 
-  <iconify-icon icon="iconamoon:arrow-right-2" class="text-xl"></iconify-icon>
-</a>
+    <div class="relative rounded-xl overflow-hidden mt-7 mb-10">
+  <div style="background-color: #14715B;" class=" via-indigo-600 to-blue-600 p-10 sm:p-14 text-white rounded-xl shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
+    
+    <!-- Banner Text Content -->
+    <div>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-2 text-white">Welcome to WhatsApp Automation Panel</h2>
+      <p class="text-lg text-white/90 mb-4 max-w-xl">
+        Manage conversations, send bulk messages, automate replies and grow your business with ease. Start exploring now.
+      </p>
+      <a style="color: #14715B;" href="/send-message" class="inline-flex items-center gap-2 bg-white  font-semibold px-5 py-3 rounded-full hover:bg-indigo-100 transition">
+        Start Messaging
+        <iconify-icon icon="iconamoon:arrow-right-2" class="text-xl"></iconify-icon>
+      </a>
+    </div>
 
-                        </div>
-                      </div>
-                    <% }) %>
-                    
+    <!-- Banner Illustration Icon (Optional) -->
+    <div class="hidden sm:block">
+      <iconify-icon icon="solar:chat-round-call-bold" class="text-[120px] opacity-20"></iconify-icon>
+    </div>
 
-                </div>
-            </div>   
+  </div>
+</div>
+
+  <div class="mb-10">
+  <h6 class="mb-6">WhatsApp Dashboard Overview</h6>
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+
+    <!-- Sent Messages -->
+    <div class="card h-full rounded-xl overflow-hidden border-0">
+      <div class="card-body p-6">
+        <div class="w-[48px] h-[48px] inline-flex items-center justify-center bg-green-100 text-green-600 mb-4 rounded-full">
+          <iconify-icon icon="mdi:send" class="text-xl"></iconify-icon>
+        </div>
+        <h6 class="text-lg font-semibold mb-1">Sent Messages</h6>
+        <p class="text-2xl font-bold text-gray-800 dark:text-white"><%= stats.sent_messages %></p>
+      </div>
+    </div>
+
+    <!-- Active Sessions -->
+    <div class="card h-full rounded-xl overflow-hidden border-0">
+      <div class="card-body p-6">
+        <div class="w-[48px] h-[48px] inline-flex items-center justify-center bg-blue-100 text-blue-600 mb-4 rounded-full">
+          <iconify-icon icon="mdi:account-multiple" class="text-xl"></iconify-icon>
+        </div>
+        <h6 class="text-lg font-semibold mb-1">Active Sessions</h6>
+        <p class="text-2xl font-bold text-gray-800 dark:text-white"><%= stats.active_sessions %></p>
+      </div>
+    </div>
+
+    <!-- Pending Messages -->
+    <div class="card h-full rounded-xl overflow-hidden border-0">
+      <div class="card-body p-6">
+        <div class="w-[48px] h-[48px] inline-flex items-center justify-center bg-yellow-100 text-yellow-600 mb-4 rounded-full">
+          <iconify-icon icon="mdi:clock-outline" class="text-xl"></iconify-icon>
+        </div>
+        <h6 class="text-lg font-semibold mb-1">Pending Messages</h6>
+        <p class="text-2xl font-bold text-gray-800 dark:text-white"><%= stats.pending_messages %></p>
+      </div>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="card h-full rounded-xl overflow-hidden border-0">
+      <div class="card-body p-6">
+        <div class="w-[48px] h-[48px] inline-flex items-center justify-center bg-purple-100 text-purple-600 mb-4 rounded-full">
+          <iconify-icon icon="mdi:whatsapp" class="text-xl"></iconify-icon>
+        </div>
+        <h6 class="text-lg font-semibold mb-1">Connection Status</h6>
+        <p class="text-xl font-medium text-gray-800 dark:text-white">
+          <%= stats.connection_status || 'QR Pending' %>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
   </div>
 
 <%- include('../partials/footer') %>

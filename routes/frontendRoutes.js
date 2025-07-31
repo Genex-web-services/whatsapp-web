@@ -10,7 +10,7 @@ const handleError = require('../utils/handleError');
 const redirectIfLoggedIn = (req, res, next) => {
   const { gwsToken } = req.cookies;
   if (gwsToken) {
-    return res.redirect('/dashboard');
+    return res.redirect('/projects');
   }
   next();
 };
@@ -36,7 +36,7 @@ router.get('/login', async (req, res) => {
    
 
   if (gwsToken) {
-    return res.redirect('/dashboard');
+    return res.redirect('/projects');
   }
 
   const queryParams = req.query;
@@ -48,8 +48,30 @@ notifications: req.notification || [],
   });
 });
 
+
+
+// OAuth Callback
+router.get('/auth/callback',accessScope(), (req, res) => {
+  const { gwsToken } = req.cookies;
+
+  if (gwsToken) {
+    return res.redirect('/projects');
+  } else {
+    return res.redirect('/login');
+  }
+});
+
+// Define function
+const getQueryParams = (req) => req.query;
+// ---------------- Product ----------------
+router.get('/projects', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('projects/index.ejs', { queryParams: getQueryParams(req),user: req.user || null,
+    products: req.products || [], 
+notifications: req.notification || [], });
+});
+
 // Dashboard Page
-router.get('/dashboard', authMiddleware, navbarMiddleware, accessScope(), async (req, res) => {
+router.get('/dashboard/:id/index', authMiddleware, navbarMiddleware, accessScope(), async (req, res) => {
   try {
     const products = (req.products || []).filter(
       p => p.product_code !== 'genexpay' && p.product_code !== 'apicenter' && p.product_code !== 'admincenter'&& p.product_code !== 'partnerportal'
@@ -59,6 +81,12 @@ router.get('/dashboard', authMiddleware, navbarMiddleware, accessScope(), async 
       user: req.user,
       products: products,
       notifications: req.notification || [],
+      stats: {
+          sent_messages: 1289,
+          active_sessions: 3,
+          pending_messages: 42,
+          connection_status: 'Connected' // or 'QR Pending', 'Disconnected', etc.
+        }
     });
   } catch (error) {
     console.error('Dashboard Error:', error);
@@ -75,152 +103,124 @@ router.get('/dashboard', authMiddleware, navbarMiddleware, accessScope(), async 
   }
 });
 
-
-// OAuth Callback
-router.get('/auth/callback',accessScope(), (req, res) => {
-  const { gwsToken } = req.cookies;
-
-  if (gwsToken) {
-    return res.redirect('/dashboard');
-  } else {
-    return res.redirect('/login');
-  }
+// ---------------- Session / QR ----------------
+router.get('/dashboard/:id/qr-scan', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('dashboard/qr-scan.ejs', {
+    queryParams: getQueryParams(req),
+    user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [],
+  });
 });
 
-// Tenants
-router.get('/tenants/list',authMiddleware,navbarMiddleware,hasPermission('list_tenant'),accessScope(),async (req, res) => {
-  const { Tenant} = await getModels();  
-  try {
-    console.log('Fetching tenants with filter:', req.filter);
-      const tenants = await Tenant.find(req.filter);
-      renderWithLocals(res, 'tenants/list', req, {
-        tenants
-      });
-    } catch (error) {
-      console.error('Error fetching tenants:', error);
-      return handleError(res, {
-  status: 500,
-  message: 'Server Error. Please try again later.',
-  type: 'text', // or 'html' or 'json' depending on context
-  error: null,
-  buttons: [
-    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
-    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
-  ]
+// ---------------- Manual Sender ----------------
+router.get('/dashboard/:id/send-message', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('messages/send-message.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
 });
-    }
-  }
-);
 
-router.get('/tenants/edit/:id',authMiddleware,navbarMiddleware,hasPermission('edit_tenant'),accessScope(),async(req, res) => {
-  const { Tenant} = await getModels();
-    renderWithLocals(res, 'tenants/add', req,{
-         Tenant:Tenant.find({}),
-      });
-  }
-);
-
-// Organisations
-router.get('/organisation/list', authMiddleware, navbarMiddleware,hasPermission('list_organisation'),accessScope(), async (req, res) => {  
-  const { Organization} = await getModels();
-  try {
-    const organizations = await Organization.find(req.filter);
-    renderWithLocals(res, 'organisation/list', req, { organizations });
-  } catch (err) {
-    console.error(err);
-   return handleError(res, {
-  status: 500,
-  message: 'Server Error. Please try again later.',
-  type: 'text', // or 'html' or 'json' depending on context
-  error: null,
-  buttons: [
-    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
-    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
-  ]
+// ---------------- Bulk Sender ----------------
+router.get('/dashboard/:id/bulk-sender', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('messages/bulk-sender.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
 });
-  }
+
+// ---------------- Scheduled Messages ----------------
+router.get('/dashboard/:id/scheduled-messages', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('messages/scheduled-messages.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+// ---------------- Auto Replies ----------------
+router.get('/dashboard/:id/auto-reply', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('automation/auto-reply.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+// ---------------- Templates ----------------
+router.get('/dashboard/:id/templates', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('templates/index.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+// ---------------- Contacts ----------------
+router.get('/dashboard/:id/contacts', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  const userId = req.params.id;
+
+  res.render('contacts/index.ejs', {
+    queryParams: getQueryParams(req),
+    user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [],
+    userId, // 👈 pass the ID here
+  });
 });
 
 
-// Logs
-router.get('/logs',authMiddleware,navbarMiddleware,accessScope(),hasPermission('logs'),async (req, res) => {
-  const { Log } = await getModels();
-    try {
-      const logs = await Log.find({email:req.user.email}).sort({ createdAt: -1 }); // Optionally sort by date
-      renderWithLocals(res, 'logs/logs', req, { logs });
-    } catch (err) {
-      console.error('Error fetching logs:', err);
-      return handleError(res, {
-  status: 500,
-  message: 'Server Error. Please try again later.',
-  type: 'text', // or 'html' or 'json' depending on context
-  error: null,
-  buttons: [
-    { text: 'Reload Page', href: 'javascript:location.reload()', style: 'secondary' },
-    { text: 'Request Support', href: 'mailto:support@gws365.in', style: 'danger' }
-  ]
+// ---------------- Logs ----------------
+router.get('/dashboard/:id/message-logs', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('logs/message-logs.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
 });
-    }
-  }
-);
 
-// Settings
-router.get(
-  '/settings/company',
-  authMiddleware,
-  navbarMiddleware,accessScope(),
-  (req, res) => {
-    renderWithLocals(res, 'settings/company', req);
-  }
-);
-router.get(
-  '/settings/notification',
-  authMiddleware,
-  navbarMiddleware,accessScope(),
-  (req, res) => {
-    renderWithLocals(res, 'settings/notification', req);
-  }
-);
-router.get(
-  '/settings/notificationAlert',
-  authMiddleware,
-  navbarMiddleware,accessScope(),
-  (req, res) => {
-    renderWithLocals(res, 'settings/notificationAlert', req);
-  }
-);
-router.get(
-  '/settings/theme',
-  authMiddleware,
-  navbarMiddleware,accessScope(),
-  (req, res) => {
-    renderWithLocals(res, 'settings/theme', req);
-  }
-);
-router.get(
-  '/settings/currencies',
-  authMiddleware,
-  navbarMiddleware,accessScope(),
-  (req, res) => {
-    renderWithLocals(res, 'settings/currencies', req);
-  }
-);
-router.get(
-  '/settings/language',
-  authMiddleware,
-  navbarMiddleware,accessScope(),
-  (req, res) => {
-    renderWithLocals(res, 'settings/language', req);
-  }
-);
-router.get(
-  '/settings/paymentGateway',
-  authMiddleware,
-  navbarMiddleware,accessScope(),
-  (req, res) => {
-    renderWithLocals(res, 'settings/paymentGateway', req);
-  }
-);
+router.get('/dashboard/:id/activity-logs', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('logs/activity-logs.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+
+
+router.get('/dashboard/:id/api', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('api/api.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+// ---------------- Settings ----------------
+router.get('/dashboard/:id/settings/general', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('settings/general.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+router.get('/dashboard/:id/settings/notification', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('settings/notification.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+router.get('/dashboard/:id/settings/api', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('settings/api.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+router.get('/dashboard/:id/settings/theme', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('settings/theme.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+// ---------------- Users ----------------
+router.get('/dashboard/:id/users/list', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('users/list.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
+router.get('/dashboard/:id/users/add', authMiddleware, navbarMiddleware, accessScope(), (req, res) => {
+  res.render('users/add.ejs', { queryParams: getQueryParams(req), user: req.user || null,
+    products: req.products || [],
+    notifications: req.notification || [], });
+});
+
 
 // Example of login or public route that uses redirect if already logged in
 router.get(
